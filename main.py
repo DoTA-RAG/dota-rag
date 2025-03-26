@@ -7,7 +7,7 @@ from rag.rag_pipeline import run_rag_pipeline
 
 def main():
     ### Example 1 ###
-    question = "How do I reset my account password?"
+    question = "How did Nat King Cole's musical career evolve in the 1940s?"
     answer = run_rag_pipeline(question)
     print("Final Answer:\n", answer)
 

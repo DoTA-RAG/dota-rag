@@ -1,5 +1,9 @@
 from ai71 import AI71
-from .pinecone_utils import query_pinecone, aggregate_pinecone_context
+from .pinecone_utils import (
+    query_pinecone,
+    aggregate_pinecone_context,
+    # rerank_documents, # can be used to rerank documents
+)
 
 client = AI71()  # Ensure the AI71 client is properly authenticated/configured
 
@@ -25,7 +29,7 @@ def run_rag_pipeline(question: str) -> str:
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": f"Please process the support question: {question}. Provide a step-by-step breakdown (minimal drafts, 5 words per step).",
+                "content": f"Please refine the following support question for optimal information retrieval: {question}. Provide a step-by-step breakdown (minimal drafts, 5 words per step).",
             },
         ],
     )
