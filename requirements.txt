@@ -1,0 +1,9 @@
+aws configure==0.5
+awscli==1.38.19
+torch==2.5.1
+transformers==4.45.2
+boto3==1.35.88 
+pinecone==5.4.2
+opensearch-py==2.8.0
+openai==1.66.3
+ai71==0.0.23

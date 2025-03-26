@@ -1,0 +1,16 @@
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables globally
+
+from rag.rag_pipeline import run_rag_pipeline
+
+
+def main():
+    ### Example 1 ###
+    question = "How do I reset my account password?"
+    answer = run_rag_pipeline(question)
+    print("Final Answer:\n", answer)
+
+
+if __name__ == "__main__":
+    main()
