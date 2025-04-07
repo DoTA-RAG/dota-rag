@@ -120,7 +120,7 @@ def main():
 
     # Load the evaluation data
     df = pd.read_csv(args.input_file)
-    df = df[:10]  # Limit to the first 10 rows for testing
+    # df = df[:10]  # Limit to the first 10 rows for testing
 
     results = []
     for idx, row in tqdm(df.iterrows(), total=len(df), desc="Evaluating examples"):
