@@ -33,7 +33,6 @@ model_id = "anthropic.claude-3-5-sonnet-20240620-v1:0"
 def evaluate_example(metric_module, prompt_arg, reference_answer, generated_answer):
     """
     Evaluates a single example using the provided metric module.
-
     For faithfulness, prompt_arg is the context.
     For relevance, prompt_arg is the user query.
     """
@@ -70,9 +69,6 @@ def evaluate_example(metric_module, prompt_arg, reference_answer, generated_answ
             break
         except ClientError as e:
             if e.response["Error"]["Code"] == "ThrottlingException":
-                print(
-                    f"ThrottlingException on attempt {attempt+1}/{max_retries}. Retrying in {delay} seconds..."
-                )
                 time.sleep(delay)
                 delay *= 2  # exponential backoff
             else:
@@ -98,7 +94,7 @@ def extract_score(output_text):
 def process_row(idx, row, eval_metric):
     """
     Worker function to process a single row evaluation.
-    Returns a dictionary with evaluation results and prints a summary.
+    Returns a dictionary with the row index and evaluation results.
     """
     query = row["Question"]
     context = row["Text"]
@@ -132,45 +128,29 @@ def process_row(idx, row, eval_metric):
             "Invalid eval_name provided. Must be 'faithfulness', 'relevance', or 'both'."
         )
 
-    # Compute correctness based on defined thresholds
+    # Compute correctness based on defined thresholds.
+    # For faithfulness, correct if score >= 0.0 (adjust as needed)
     if faithfulness_score is not None:
         try:
             f_val = float(faithfulness_score)
         except ValueError:
             f_val = 0.0
         f_correct = 1 if f_val >= 0.0 else 0
-        f_pct = f_correct * 100.0
     else:
-        f_correct, f_pct = 0, 0.0
+        f_correct = 0
 
+    # For relevance, correct if score >= 1.0 (adjust as needed)
     if relevance_score is not None:
         try:
             r_val = float(relevance_score)
         except ValueError:
             r_val = 0.0
         r_correct = 1 if r_val >= 1.0 else 0
-        r_pct = r_correct * 100.0
     else:
-        r_correct, r_pct = 0, 0.0
-
-    # Print a detailed summary per item
-    if eval_metric == "faithfulness":
-        print(
-            f"At {idx} problems | faithfulness_score: {faithfulness_score}, Correct {f_correct}/1 ({f_pct:.2f}%), is_correct: {f_correct==1}"
-        )
-    elif eval_metric == "relevance":
-        print(
-            f"At {idx} problems | relevance_score: {relevance_score}, Correct {r_correct}/1 ({r_pct:.2f}%), is_correct: {r_correct==1}"
-        )
-    elif eval_metric == "both":
-        print(
-            f"At {idx} problems | faithfulness_score: {faithfulness_score}, Correct {f_correct}/1 ({f_pct:.2f}%), is_correct: {f_correct==1}"
-        )
-        print(
-            f"At {idx} problems | relevance_score: {relevance_score}, Correct {r_correct}/1 ({r_pct:.2f}%), is_correct: {r_correct==1}"
-        )
+        r_correct = 0
 
     return {
+        "idx": idx,
         "faithfulness": faithfulness_score,
         "relevance": relevance_score,
         "faithfulness_correct": f_correct,
@@ -212,8 +192,13 @@ def main():
     # Load the evaluation data
     df = pd.read_csv(args.input_file)
     results = []
+    total_completed = 0
 
-    # Use a ThreadPoolExecutor to process rows concurrently
+    # Initialize cumulative counters
+    cumulative_correct_faithfulness = 0
+    cumulative_correct_relevance = 0
+
+    # Use a ThreadPoolExecutor to process rows concurrently with 2 workers.
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         futures = {
             executor.submit(process_row, idx, row, eval_metric): idx
@@ -226,13 +211,75 @@ def main():
         ):
             try:
                 result = future.result()
+                total_completed += 1
+                if eval_metric == "relevance":
+                    cumulative_correct_relevance += result["relevance_correct"]
+                    percent = (cumulative_correct_relevance / total_completed) * 100
+                    print(
+                        f"At {total_completed} problems: Relevance ({result['relevance']}) Correct {cumulative_correct_relevance}/{total_completed} ({percent:.2f}%), is_correct: {result['relevance_correct']}"
+                    )
+                elif eval_metric == "faithfulness":
+                    cumulative_correct_faithfulness += result["faithfulness_correct"]
+                    percent = (cumulative_correct_faithfulness / total_completed) * 100
+                    print(
+                        f"At {total_completed} problems: Faithfulness ({result['faithfulness']}) Correct {cumulative_correct_faithfulness}/{total_completed} ({percent:.2f}%), is_correct: {result['faithfulness_correct']}"
+                    )
+                elif eval_metric == "both":
+                    cumulative_correct_faithfulness += result["faithfulness_correct"]
+                    cumulative_correct_relevance += result["relevance_correct"]
+                    faith_percent = (
+                        cumulative_correct_faithfulness / total_completed
+                    ) * 100
+                    rel_percent = (cumulative_correct_relevance / total_completed) * 100
+                    print(
+                        f"At {total_completed} problems: Faithfulness ({result['faithfulness']}) Correct {cumulative_correct_faithfulness}/{total_completed} ({faith_percent:.2f}%), is_correct: {result['faithfulness_correct']}"
+                    )
+                    print(
+                        f"At {total_completed} problems: Relevance ({result['relevance']}) Correct {cumulative_correct_relevance}/{total_completed} ({rel_percent:.2f}%), is_correct: {result['relevance_correct']}"
+                    )
                 results.append(result)
             except Exception as exc:
                 print(f"Row {futures[future]} generated an exception: {exc}")
 
-    results_df = pd.DataFrame(results)
+    print("\n" + "#" * 16)
+    print("Evaluation completed.\n")
+    # Final cumulative summary:
+    sorted_results = sorted(results, key=lambda x: x["idx"])
+    print("Final Cumulative Summary:")
+    if eval_metric == "relevance":
+        cumulative_correct_relevance = 0
+        for count, res in enumerate(sorted_results, start=1):
+            cumulative_correct_relevance += res["relevance_correct"]
+            percent = (cumulative_correct_relevance / count) * 100
+            print(
+                f"At {count} problems: Relevance ({res['relevance']}) Correct {cumulative_correct_relevance}/{count} ({percent:.2f}%), is_correct: {res['relevance_correct']}"
+            )
+    elif eval_metric == "faithfulness":
+        cumulative_correct_faithfulness = 0
+        for count, res in enumerate(sorted_results, start=1):
+            cumulative_correct_faithfulness += res["faithfulness_correct"]
+            percent = (cumulative_correct_faithfulness / count) * 100
+            print(
+                f"At {count} problems: Faithfulness ({res['faithfulness']}) Correct {cumulative_correct_faithfulness}/{count} ({percent:.2f}%), is_correct: {res['faithfulness_correct']}"
+            )
+    elif eval_metric == "both":
+        cumulative_correct_faithfulness = 0
+        cumulative_correct_relevance = 0
+        for count, res in enumerate(sorted_results, start=1):
+            cumulative_correct_faithfulness += res["faithfulness_correct"]
+            cumulative_correct_relevance += res["relevance_correct"]
+            faith_percent = (cumulative_correct_faithfulness / count) * 100
+            rel_percent = (cumulative_correct_relevance / count) * 100
+            print(
+                f"At {count} problems: Faithfulness ({res['faithfulness']}), Correct {cumulative_correct_faithfulness}/{count} ({faith_percent:.2f}%), "
+                f"Relevance ({res['relevance']}), Correct {cumulative_correct_relevance}/{count} ({rel_percent:.2f}%), "
+                f"is_correct (current): Faithfulness: {res['faithfulness_correct']}, Relevance: {res['relevance_correct']}"
+            )
+
+    # Save results to CSV.
+    results_df = pd.DataFrame(sorted_results)
     results_df.to_csv(args.output, index=False)
-    print(f"Results saved to {args.output}")
+    print(f"\nResults saved to {args.output}")
 
 
 if __name__ == "__main__":
