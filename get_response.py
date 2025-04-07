@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 def main():
     # Read the CSV file
-    df = pd.read_csv("data/eval/data_morgana_examples_live-rag.csv")
+    df = pd.read_csv("data/data_morgana_examples_live-rag.csv")
 
     # Ensure 'response_result' column exists
     df["response_result"] = None
@@ -27,7 +27,7 @@ def main():
         df.at[idx, "response_result"] = answer
 
     # Save the updated DataFrame to a new CSV file
-    output_file = "data/eval/data_morgana_examples_live-rag_results.csv"
+    output_file = "data/data_morgana_examples_live-rag_results.csv"
     df.to_csv(output_file, index=False)
     print(f"Results saved to {output_file}")
 

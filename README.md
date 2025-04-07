@@ -68,17 +68,17 @@ The repository includes an **evaluation script** that processes multiple questio
    ```
    The CSV should contain a column named **`Question`**.
 
-2. **Run the evaluation script:**
+2. **Get response to eval:**
    ```bash
-   python evaluate.py
+   python get_response.py
    ```
-
-This script will:
-✅ Process each question  
-✅ Store the generated response in a new column (`response_result`)  
-✅ Save the results in a new file:  
-```
-data/eval/data_morgana_examples_live-rag_results.csv
+   
+3. **Run judge score:**
+```bash
+   python utils/eval/evaluate.py \
+   --input_file "data/data_morgana_examples_live-rag_results.csv"\
+   --eval_name "both"\ 
+   --output "data/evaluation_results.csv"
 ```
 
 ---
@@ -88,20 +88,23 @@ data/eval/data_morgana_examples_live-rag_results.csv
 ```
 dota-rag/
 ├── data/
-│   └── eval/
-│       └── data_morgana_examples_live-rag.csv  # CSV file with evaluation questions
+│   └── data_morgana_examples_live-rag.csv  # CSV file with evaluation questions 
+├── utils/
+│   ├── evaluate.py             # Evaluation script
+│   ├── prompt_faithfulness.py  # Faithfulness metric prompt templates
+│   └── prompt_relevance.py     # Relevance metric prompt templates
 ├── rag/
-│   ├── __init__.py         # Package initialization and exports
-│   ├── aws_ssm.py          # AWS SSM utilities
-│   ├── embedding.py        # Transformer embedding functions
-│   ├── pinecone_utils.py   # Pinecone vector search and reranking functions
-│   ├── rag_pipeline.py     # RAG pipeline implementation
-│   └── rerank.py           # Reranking functions (bge-reranker-v2-m3)
-├── env_sample              # Sample environment file (copy to .env)
-├── evaluate.py             # Evaluation script to process CSV questions
-├── main.py                 # Main script for running the pipeline
-├── requirements.txt        # Python dependencies
-└── README.md               # This file
+│   ├── __init__.py             # Package initialization and exports
+│   ├── aws_ssm.py              # AWS SSM utilities
+│   ├── embedding.py            # Transformer embedding functions
+│   ├── pinecone_utils.py       # Pinecone vector search and reranking functions
+│   ├── rag_pipeline.py         # RAG pipeline implementation
+│   └── rerank.py               # Reranking functions (bge-reranker-v2-m3)
+├── env_sample                  # Sample environment file (copy to .env)
+├── get_response.py             # Evaluation script to process CSV questions
+├── main.py                     # Main script for running the pipeline
+├── requirements.txt            # Python dependencies
+└── README.md                 
 ```
 
 ---

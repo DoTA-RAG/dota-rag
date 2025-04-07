@@ -21,7 +21,7 @@ def run_rag_pipeline(question: str) -> str:
     # Chain of Draft: Thinking Faster by Writing Less (https://arxiv.org/abs/2502.18600)
     # Optimizing Temperature for Language Models with Multi-Sample Inference (https://arxiv.org/abs/2502.05234)
     initial_response = client.chat.completions.create(
-        model="tiiuae/falcon-mamba-7b-instruct",
+        model="tiiuae/falcon3-10b-instruct",
         max_tokens=128,
         temperature=0.2,
         top_p=0.1,
@@ -41,8 +41,8 @@ def run_rag_pipeline(question: str) -> str:
 
     # Second chat call: generate final answer using the aggregated context
     final_response = client.chat.completions.create(
-        model="tiiuae/falcon-mamba-7b-instruct",
-        max_tokens=2048,
+        model="tiiuae/falcon3-10b-instruct",
+        max_tokens=8192,
         temperature=0.6,
         top_p=0.95,
         messages=[
