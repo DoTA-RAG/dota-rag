@@ -113,7 +113,7 @@ def main():
     parser.add_argument(
         "--input_file",
         type=str,
-        default="/Users/natapong/Documents/deepx/typhoon/scbx-10x/dota-rag/data/data_morgana_examples_live-rag_results.csv",
+        default="data/data_morgana_examples_live-rag_results.csv",
         help="Input CSV file path for evaluation data.",
     )
     args = parser.parse_args()
