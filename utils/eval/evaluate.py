@@ -5,14 +5,15 @@ import json
 import time
 import pandas as pd
 import boto3
-from dotenv import load_dotenv
+from dotenv import load_dotenv  # Ensure the 'python-dotenv' package is installed
 from tqdm.auto import tqdm
 from botocore.exceptions import ClientError
 import prompt_faithfulness
 import prompt_relevance
+import concurrent.futures
 
 # Load environment variables
-load_dotenv()
+load_dotenv()  # Load environment variables from a .env file
 REGION_NAME = os.getenv("REGION_NAME")
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
@@ -60,7 +61,7 @@ def evaluate_example(metric_module, prompt_arg, reference_answer, generated_answ
     }
 
     max_retries = 5
-    delay = 5  # initial delay in seconds
+    delay = 10  # initial delay in seconds
     for attempt in range(max_retries):
         try:
             response = bedrock_runtime.invoke_model(
@@ -94,6 +95,89 @@ def extract_score(output_text):
     return match.group(1) if match else None
 
 
+def process_row(idx, row, eval_metric):
+    """
+    Worker function to process a single row evaluation.
+    Returns a dictionary with evaluation results and prints a summary.
+    """
+    query = row["Question"]
+    context = row["Text"]
+    reference_answer = row["Answer"]
+    generated_answer = row["response_result"]
+
+    faithfulness_score = None
+    relevance_score = None
+
+    if eval_metric == "faithfulness":
+        output_text = evaluate_example(
+            prompt_faithfulness, context, reference_answer, generated_answer
+        )
+        faithfulness_score = extract_score(output_text)
+    elif eval_metric == "relevance":
+        output_text = evaluate_example(
+            prompt_relevance, query, reference_answer, generated_answer
+        )
+        relevance_score = extract_score(output_text)
+    elif eval_metric == "both":
+        faithfulness_output = evaluate_example(
+            prompt_faithfulness, context, reference_answer, generated_answer
+        )
+        faithfulness_score = extract_score(faithfulness_output)
+        relevance_output = evaluate_example(
+            prompt_relevance, query, reference_answer, generated_answer
+        )
+        relevance_score = extract_score(relevance_output)
+    else:
+        raise ValueError(
+            "Invalid eval_name provided. Must be 'faithfulness', 'relevance', or 'both'."
+        )
+
+    # Compute correctness based on defined thresholds
+    if faithfulness_score is not None:
+        try:
+            f_val = float(faithfulness_score)
+        except ValueError:
+            f_val = 0.0
+        f_correct = 1 if f_val >= 0.0 else 0
+        f_pct = f_correct * 100.0
+    else:
+        f_correct, f_pct = 0, 0.0
+
+    if relevance_score is not None:
+        try:
+            r_val = float(relevance_score)
+        except ValueError:
+            r_val = 0.0
+        r_correct = 1 if r_val >= 1.0 else 0
+        r_pct = r_correct * 100.0
+    else:
+        r_correct, r_pct = 0, 0.0
+
+    # Print a detailed summary per item
+    if eval_metric == "faithfulness":
+        print(
+            f"At {idx} problems | faithfulness_score: {faithfulness_score}, Correct {f_correct}/1 ({f_pct:.2f}%), is_correct: {f_correct==1}"
+        )
+    elif eval_metric == "relevance":
+        print(
+            f"At {idx} problems | relevance_score: {relevance_score}, Correct {r_correct}/1 ({r_pct:.2f}%), is_correct: {r_correct==1}"
+        )
+    elif eval_metric == "both":
+        print(
+            f"At {idx} problems | faithfulness_score: {faithfulness_score}, Correct {f_correct}/1 ({f_pct:.2f}%), is_correct: {f_correct==1}"
+        )
+        print(
+            f"At {idx} problems | relevance_score: {relevance_score}, Correct {r_correct}/1 ({r_pct:.2f}%), is_correct: {r_correct==1}"
+        )
+
+    return {
+        "faithfulness": faithfulness_score,
+        "relevance": relevance_score,
+        "faithfulness_correct": f_correct,
+        "relevance_correct": r_correct,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Process and export evaluation results."
@@ -113,99 +197,38 @@ def main():
     parser.add_argument(
         "--input_file",
         type=str,
-        default="data/data_morgana_examples_live-rag_results.csv",
+        default="data/data_examples_live_rag_results.csv",  # Renamed for clarity
         help="Input CSV file path for evaluation data.",
     )
     args = parser.parse_args()
 
+    # Normalize the evaluation name input
+    eval_metric = args.eval_name.strip().lower()
+    if eval_metric not in {"faithfulness", "relevance", "both"}:
+        raise ValueError(
+            "Invalid eval_name provided. Must be 'faithfulness', 'relevance', or 'both'."
+        )
+
     # Load the evaluation data
     df = pd.read_csv(args.input_file)
-    # df = df[:10]  # Limit to the first 10 rows for testing
-
     results = []
-    for idx, row in tqdm(df.iterrows(), total=len(df), desc="Evaluating examples"):
-        query = row["Question"]
-        context = row["Text"]
-        reference_answer = row["Answer"]
-        generated_answer = row["response_result"]
-        topic = row["Topic"] if "Topic" in row and not pd.isna(row["Topic"]) else "N/A"
 
-        # Initialize scores to None
-        faithfulness_score = None
-        relevance_score = None
-
-        # Evaluate based on the chosen metric(s)
-        if args.eval_name.lower() == "faithfulness":
-            output_text = evaluate_example(
-                prompt_faithfulness, context, reference_answer, generated_answer
-            )
-            faithfulness_score = extract_score(output_text)
-        elif args.eval_name.lower() == "relevance":
-            output_text = evaluate_example(
-                prompt_relevance, query, reference_answer, generated_answer
-            )
-            relevance_score = extract_score(output_text)
-        else:
-            # Evaluate both metrics
-            faithfulness_output = evaluate_example(
-                prompt_faithfulness, context, reference_answer, generated_answer
-            )
-            faithfulness_score = extract_score(faithfulness_output)
-
-            relevance_output = evaluate_example(
-                prompt_relevance, query, reference_answer, generated_answer
-            )
-            relevance_score = extract_score(relevance_output)
-
-        # Compute correctness based on defined thresholds
-        # For faithfulness: correct if score equals 1.000
-        if faithfulness_score is not None:
+    # Use a ThreadPoolExecutor to process rows concurrently
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        futures = {
+            executor.submit(process_row, idx, row, eval_metric): idx
+            for idx, row in df.iterrows()
+        }
+        for future in tqdm(
+            concurrent.futures.as_completed(futures),
+            total=len(futures),
+            desc="Evaluating examples",
+        ):
             try:
-                f_val = float(faithfulness_score)
-            except ValueError:
-                f_val = 0.0
-            f_correct = 1 if f_val == 1.0 else 0
-            f_pct = f_correct * 100.0
-        else:
-            f_correct, f_pct = 0, 0.0
-
-        # For relevance: correct if score equals 2
-        if relevance_score is not None:
-            try:
-                r_val = float(relevance_score)
-            except ValueError:
-                r_val = 0.0
-            r_correct = 1 if r_val == 2.0 else 0
-            r_pct = r_correct * 100.0
-        else:
-            r_correct, r_pct = 0, 0.0
-
-        # Print detailed summary per item
-        if args.eval_name.lower() == "faithfulness":
-            print(
-                f"At {idx} problems | faithfulness_score | {faithfulness_score} : Correct {f_correct}/1 ({f_pct:.2f}%), is_correct: {f_correct==1}"
-            )
-        elif args.eval_name.lower() == "relevance":
-            print(
-                f"At {idx} problems |  relevance_score | {relevance_score} : Correct {r_correct}/1 ({r_pct:.2f}%), is_correct: {r_correct==1}"
-            )
-        else:
-            # Print both summaries
-            print(
-                f"At {idx} problems | faithfulness_score | {faithfulness_score} : Correct {f_correct}/1 ({f_pct:.2f}%), is_correct: {f_correct==1}"
-            )
-            print(
-                f"At {idx} problems |  relevance_score | {relevance_score} : Correct {r_correct}/1 ({r_pct:.2f}%), is_correct: {r_correct==1}"
-            )
-
-        results.append(
-            {
-                "faithfulness": faithfulness_score,
-                "relevance": relevance_score,
-                "faithfulness_correct": f_correct,
-                "relevance_correct": r_correct,
-            }
-        )
+                result = future.result()
+                results.append(result)
+            except Exception as exc:
+                print(f"Row {futures[future]} generated an exception: {exc}")
 
     results_df = pd.DataFrame(results)
     results_df.to_csv(args.output, index=False)
