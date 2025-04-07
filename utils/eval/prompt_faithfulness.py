@@ -13,4 +13,6 @@ DEFAULT_USER_TEMPLATE = """## Context:
 {reference_answer}
 
 ## Generated Answer:
-{generated_answer}"""
+{generated_answer}
+
+## Scoring:"""

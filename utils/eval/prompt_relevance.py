@@ -17,4 +17,6 @@ DEFAULT_USER_TEMPLATE = """## User Query:
 {reference_answer}
 
 ## Generated Answer:
-{generated_answer}"""
+{generated_answer}
+
+## Scoring:"""
