@@ -16,4 +16,6 @@ __all__ = [
     "query_pinecone",
     "batch_query_pinecone",
     "aggregate_pinecone_context",
+    "run_rag_pipeline",
+    "run_rag_pipeline_batch",
 ]

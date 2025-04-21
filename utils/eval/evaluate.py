@@ -27,7 +27,8 @@ bedrock_runtime = boto3.client(
 )
 
 # Model ID (e.g., Claude 3 Haiku)
-model_id = "anthropic.claude-3-5-sonnet-20240620-v1:0"
+# model_id = "anthropic.claude-3-5-sonnet-20240620-v1:0"
+model_id = "us.anthropic.claude-3-5-haiku-20241022-v1:0"
 
 
 def evaluate_example(metric_module, prompt_arg, reference_answer, generated_answer):
@@ -128,26 +129,37 @@ def process_row(idx, row, eval_metric):
             "Invalid eval_name provided. Must be 'faithfulness', 'relevance', or 'both'."
         )
 
-    # Compute correctness based on defined thresholds.
-    # For faithfulness, correct if score >= 0.0 (adjust as needed)
-    if faithfulness_score is not None:
-        try:
-            f_val = float(faithfulness_score)
-        except ValueError:
-            f_val = 0.0
-        f_correct = 1 if f_val >= 0.0 else 0
-    else:
-        f_correct = 0
-
-    # For relevance, correct if score >= 1.0 (adjust as needed)
+    # For relevance
     if relevance_score is not None:
         try:
             r_val = float(relevance_score)
         except ValueError:
             r_val = 0.0
-        r_correct = 1 if r_val >= 1.0 else 0
+
+        if r_val > 1.0:
+            r_correct = 1
+        elif r_val > 0.0:
+            r_correct = 0.5
+        else:
+            r_correct = 0
     else:
         r_correct = 0
+
+    # for faithfulness
+    if faithfulness_score is not None:
+        try:
+            f_val = float(faithfulness_score)
+        except ValueError:
+            f_val = 0.0
+
+        if f_val > 1.0:
+            f_correct = 1
+        elif f_val > 0.0:
+            f_correct = 0.5
+        else:
+            f_correct = 0
+    else:
+        f_correct = 0
 
     return {
         "idx": idx,
@@ -199,7 +211,7 @@ def main():
     cumulative_correct_relevance = 0
 
     # Use a ThreadPoolExecutor to process rows concurrently with 2 workers.
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as executor:
         futures = {
             executor.submit(process_row, idx, row, eval_metric): idx
             for idx, row in df.iterrows()
