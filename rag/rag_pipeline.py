@@ -19,29 +19,29 @@ def run_rag_pipeline(question: str) -> str:
       3. Query Pinecone and aggregate retrieved contexts.
       4. Generate the final answer using the aggregated context.
     """
-    # # Step 1: Refine the question into a better retrieval prompt
-    # initial_resp = client.chat.completions.create(
-    #     model="tiiuae/falcon3-10b-instruct",
-    #     max_tokens=128,
-    #     temperature=0.2,
-    #     top_p=0.1,
-    #     messages=[
-    #         {"role": "system", "content": "You are a helpful assistant."},
-    #         {
-    #             "role": "user",
-    #             "content": (
-    #                 f"Please refine the following support question for optimal information retrieval: "
-    #                 f"{question}. Provide a step-by-step breakdown—minimal drafts, 5 words per step."
-    #             ),
-    #         },
-    #     ],
-    # )
-    # query_context = (
-    #     f"Question: {question}\n\nWords step support question here:\n"
-    #     + initial_resp.choices[0].message.content
-    # )
+    # Step 1: Refine the question into a better retrieval prompt
+    initial_resp = client.chat.completions.create(
+        model="tiiuae/falcon3-10b-instruct",
+        max_tokens=128,
+        temperature=0.2,
+        top_p=0.1,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": (
+                    f"Please refine the following support question for optimal information retrieval: "
+                    f"{question}. Provide a step-by-step breakdown—minimal drafts, 5 words per step."
+                ),
+            },
+        ],
+    )
+    query_context = (
+        f"Question: {question}\n\nWords step support question here:\n"
+        + initial_resp.choices[0].message.content
+    )
 
-    # print(f"Refined question for retrieval: {query_context}")
+    print(f"Refined question for retrieval: {query_context}")
 
     # Step 2: Choose namespaces via AI routing
     available_ns = list_namespaces()
@@ -50,8 +50,7 @@ def run_rag_pipeline(question: str) -> str:
     print(f"Chosen namespaces: {ns_to_use}")
 
     # Step 3: Retrieve and aggregate context
-    # pinecone_results = query_pinecone(query_context, top_k=10, namespaces=ns_to_use)
-    pinecone_results = query_pinecone(question, top_k=10, namespaces=ns_to_use)
+    pinecone_results = query_pinecone(query_context, top_k=10, namespaces=ns_to_use)
     aggregated_context = aggregate_pinecone_context(pinecone_results)
 
     # Step 4: Generate final answer with context
