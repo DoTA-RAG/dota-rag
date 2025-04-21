@@ -37,7 +37,7 @@ def run_rag_pipeline(question: str) -> str:
         ],
     )
     query_context = (
-        f"Question: {question}\n\nWords step support question here:\n"
+        f"Question: {question}\n\n### Planning to solve problem:"
         + initial_resp.choices[0].message.content
     )
 
@@ -62,11 +62,17 @@ def run_rag_pipeline(question: str) -> str:
         messages=[
             {
                 "role": "system",
-                "content": f"You are a helpful assistant.\nContext: {aggregated_context}",
+                "content": f"You are a helpful assistant.\n\n### Context: {aggregated_context}",
             },
-            {"role": "user", "content": question},
+            {
+                "role": "user",
+                "content": question,
+            },
         ],
     )
+
+    print(f"Final answer: {final_resp.choices[0].message.content}")
+
     return final_resp.choices[0].message.content
 
 

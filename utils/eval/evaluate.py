@@ -152,7 +152,7 @@ def process_row(idx, row, eval_metric):
         except ValueError:
             f_val = 0.0
 
-        if f_val > 1.0:
+        if f_val >= 0.8:
             f_correct = 1
         elif f_val > 0.0:
             f_correct = 0.5
