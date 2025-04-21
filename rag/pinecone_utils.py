@@ -1,88 +1,84 @@
+import os
 from functools import cache
-from typing import Dict, List
-from multiprocessing.pool import ThreadPool
 from pinecone import Pinecone
-from .aws_ssm import get_ssm_secret
-from .embedding import embed_query, batch_embed_queries
+from multiprocessing.pool import ThreadPool
 
-PINECONE_INDEX_NAME = "fineweb10bt-512-0w-e5-base-v2"
-PINECONE_NAMESPACE = "default"
+from .embedding import embed_query
+
+# ─── CONFIG ─────────────────────────────────────────────────────────────
+INDEX_NAME = os.getenv(
+    "PINECONE_INDEX_NAME", "fineweb10bt-768-arctic-m-v2-weborganizer-full"
+)
 
 
+# ─── INTERNAL INDEX INITIALIZER ───────────────────────────────────────────
 @cache
-def get_pinecone_index(index_name: str = PINECONE_INDEX_NAME):
-    """Initialize and return a Pinecone index using the secure API key from SSM."""
-    pc = Pinecone(api_key=get_ssm_secret("/pinecone/ro_token"))
-    return pc.Index(name=index_name)
+def _index():
+    pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+    return pc.Index(INDEX_NAME)
 
 
+# ─── NAMESPACE LISTING ────────────────────────────────────────────────────
+def list_namespaces() -> list[str]:
+    stats = _index().describe_index_stats()
+    return list(stats.get("namespaces", {}).keys())
+
+
+# ─── SINGLE-QUERY EMBEDDING + QUERY ───────────────────────────────────────
 def query_pinecone(
-    query: str, top_k: int = 10, namespace: str = PINECONE_NAMESPACE
-) -> Dict:
-    """Query the Pinecone index for the given query."""
-    index = get_pinecone_index()
-    results = index.query(
+    query: str, top_k: int = 5, namespaces: str | list[str] = "default"
+) -> dict:
+    if namespaces == "default":
+        namespaces = list_namespaces()
+    elif isinstance(namespaces, str):
+        namespaces = [namespaces]
+
+    return _index().query_namespaces(
         vector=embed_query(query),
         top_k=top_k,
-        include_values=False,
-        namespace=namespace,
+        namespaces=namespaces,
+        metric="cosine",
         include_metadata=True,
+        show_progress=False,
     )
-    return results
 
 
+# ─── BATCH-QUERY SUPPORT ──────────────────────────────────────────────────
 def batch_query_pinecone(
-    queries: List[str],
-    top_k: int = 10,
-    namespace: str = PINECONE_NAMESPACE,
+    queries: list[str],
+    top_k: int = 5,
+    namespaces: str | list[str] = "default",
     n_parallel: int = 10,
-) -> List[Dict]:
-    """Batch query the Pinecone index using parallel threads."""
-    index = get_pinecone_index()
-    embeddings = batch_embed_queries(queries)
-    with ThreadPool(n_parallel) as pool:
-        results = pool.map(
-            lambda vec: index.query(
-                vector=vec,
-                top_k=top_k,
-                include_values=False,
-                namespace=namespace,
-                include_metadata=True,
-            ),
-            embeddings,
+) -> list[dict]:
+    """
+    Query Pinecone for each query in parallel.
+    Returns a list of result dicts.
+    """
+    if namespaces == "default":
+        namespaces = list_namespaces()
+    elif isinstance(namespaces, str):
+        namespaces = [namespaces]
+
+    # Precompute all embeddings
+    vectors = [embed_query(q) for q in queries]
+
+    def _worker(vec):
+        return _index().query_namespaces(
+            vector=vec,
+            top_k=top_k,
+            namespaces=namespaces,
+            metric="cosine",
+            include_metadata=True,
+            show_progress=False,
         )
-    return results
+
+    with ThreadPool(n_parallel) as pool:
+        return pool.map(_worker, vectors)
 
 
-def aggregate_pinecone_context(results: Dict) -> str:
-    """Aggregate and return the text context from Pinecone query results (original order)."""
-    matches = results.get("matches", [])
-    return "\n\n".join(match["metadata"].get("text", "") for match in matches)
-
-
-def rerank_documents(
-    query: str, documents: List[str], top_n: int = 3, model: str = "bge-reranker-v2-m3"
-) -> List[Dict]:
+# ─── CONTEXT AGGREGATION ──────────────────────────────────────────────────
+def aggregate_pinecone_context(results: dict, field: str = "text") -> str:
     """
-    Use Pinecone's inference.rerank API to rerank a list of documents given a query.
-
-    Parameters:
-      - query: The query string.
-      - documents: A list of document texts to rerank.
-      - top_n: The number of top documents to return.
-      - model: The reranking model to use.
-
-    Returns:
-      A list of dictionaries for the top_n documents, each containing reranking scores
-      and document text.
+    Concatenate the `field` from each match's metadata, separated by blank lines.
     """
-    # Create a new Pinecone client instance for inference rerank.
-    pc = Pinecone(api_key=get_ssm_secret("/pinecone/ro_token"))
-    rerank_results = pc.inference.rerank(
-        model=model,
-        query=query,
-        documents=documents,
-        top_n=top_n,
-        return_documents=True,
-    )
-    return rerank_results
+    return "\n\n".join(m["metadata"].get(field, "") for m in results.get("matches", []))

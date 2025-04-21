@@ -1,83 +1,101 @@
 from functools import cache
-from typing import List, Literal
+import os
 import torch
-from transformers import AutoModel, AutoTokenizer
+from transformers import AutoConfig, AutoTokenizer, AutoModel
+
+# ─── CONFIG ─────────────────────────────────────────────────────────────
+MODEL_NAME = os.getenv("EMBED_MODEL", "Snowflake/snowflake-arctic-embed-m-v2.0")
+MAX_LEN = int(os.getenv("EMBED_MAX_LEN", "8192"))
+
+
+# ─── DEVICE SELECTION ────────────────────────────────────────────────────
+@cache
+def _device() -> torch.device:
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    if torch.backends.mps.is_available():
+        return torch.device("mps")
+    return torch.device("cpu")
+
+
+# ─── TOKENIZER & MODEL ───────────────────────────────────────────────────
+@cache
+def _tokenizer() -> AutoTokenizer:
+    return AutoTokenizer.from_pretrained(MODEL_NAME)
 
 
 @cache
-def has_mps() -> bool:
-    return torch.backends.mps.is_available()
+def _model() -> AutoModel:
+    config = AutoConfig.from_pretrained(MODEL_NAME, trust_remote_code=True)
 
+    # if xformers isn't installed (which it isn't on Mac M2), disable
+    try:
+        import xformers  # noqa: F401
 
-@cache
-def has_cuda() -> bool:
-    return torch.cuda.is_available()
+        has_xformers = True
+    except ImportError:
+        has_xformers = False
 
+    config.use_memory_efficient_attention = has_xformers
+    config.attn_implementation = "eager"
 
-@cache
-def get_tokenizer(model_name: str = "intfloat/e5-base-v2") -> AutoTokenizer:
-    return AutoTokenizer.from_pretrained(model_name)
-
-
-@cache
-def get_model(model_name: str = "intfloat/e5-base-v2"):
-    model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
-    if has_mps():
-        return model.to("mps")
-    elif has_cuda():
-        return model.to("cuda")
-    else:
-        return model.to("cpu")
-
-
-def average_pool(
-    last_hidden_states: torch.Tensor, attention_mask: torch.Tensor
-) -> torch.Tensor:
-    """Perform average pooling on token embeddings, ignoring padding."""
-    masked_hidden = last_hidden_states.masked_fill(
-        ~attention_mask[..., None].bool(), 0.0
-    )
-    return masked_hidden.sum(dim=1) / attention_mask.sum(dim=1)[..., None]
-
-
-def batch_embed_queries(
-    queries: List[str],
-    query_prefix: str = "query:",
-    model_name: str = "intfloat/e5-base-v2",
-    pooling: Literal["cls", "avg"] = "avg",
-    normalize: bool = True,
-) -> List[List[float]]:
-    """
-    Embed a batch of queries using the specified transformer model.
-    """
-    prefixed_queries = [f"{query_prefix} {query}" for query in queries]
-    tokenizer = get_tokenizer(model_name)
-    model = get_model(model_name)
-    with torch.no_grad():
-        encoded = tokenizer(
-            prefixed_queries, padding=True, return_tensors="pt", truncation=True
+    model = (
+        AutoModel.from_pretrained(
+            MODEL_NAME,
+            config=config,
+            add_pooling_layer=False,
+            trust_remote_code=True,
         )
-        encoded = encoded.to(model.device)
-        outputs = model(**encoded)
-        if pooling == "cls":
-            embeddings = outputs.last_hidden_state[:, 0]
-        elif pooling == "avg":
-            embeddings = average_pool(
-                outputs.last_hidden_state, encoded["attention_mask"]
-            )
-        else:
-            raise ValueError(f"Unknown pooling type: {pooling}")
-        if normalize:
-            embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
-    return embeddings.tolist()
+        .to(_device())
+        .eval()
+    )
+    return model
 
 
-def embed_query(
-    query: str,
+# ─── POOLING ────────────────────────────────────────────────────────────
+def _avg_pool(last_hidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    masked = last_hidden.masked_fill(~mask[..., None].bool(), 0.0)
+    return masked.sum(dim=1) / mask.sum(dim=1)[..., None]
+
+
+# ─── BATCH EMBEDDING ────────────────────────────────────────────────────
+def batch_embed_queries(
+    queries: list[str],
     query_prefix: str = "query:",
-    model_name: str = "intfloat/e5-base-v2",
-    pooling: Literal["cls", "avg"] = "avg",
+    max_length: int = MAX_LEN,
     normalize: bool = True,
-) -> List[float]:
-    """Embed a single query using the batch embedding function."""
-    return batch_embed_queries([query], query_prefix, model_name, pooling, normalize)[0]
+) -> list[list[float]]:
+    """
+    Embed a batch of queries using the Snowflake model.
+    Returns one embedding vector per query.
+    """
+    # prepend prefix
+    texts = [f"{query_prefix} {q}" for q in queries]
+    tok = _tokenizer()(
+        texts,
+        padding=True,
+        truncation=True,
+        max_length=max_length,
+        return_tensors="pt",
+    ).to(_device())
+
+    with torch.no_grad():
+        hidden = _model()(**tok)[0]
+        pooled = _avg_pool(hidden, tok.attention_mask)
+        if normalize:
+            pooled = torch.nn.functional.normalize(pooled, p=2, dim=1)
+
+    return [vec.cpu().tolist() for vec in pooled]
+
+
+# ─── SINGLE QUERY EMBEDDING ─────────────────────────────────────────────
+def embed_query(
+    text: str,
+    query_prefix: str = "query:",
+    max_length: int = MAX_LEN,
+    normalize: bool = True,
+) -> list[float]:
+    """
+    Embed a single query by delegating to batch_embed_queries.
+    """
+    return batch_embed_queries([text], query_prefix, max_length, normalize)[0]
