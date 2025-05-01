@@ -97,10 +97,10 @@ def process_row(idx, row, eval_metric):
     Worker function to process a single row evaluation.
     Returns a dictionary with the row index and evaluation results.
     """
-    query = row["Question"]
-    context = row["Text"]
-    reference_answer = row["Answer"]
-    generated_answer = row["response_result"]
+    query = row["question"]
+    context = "\n\n".join([i['passage'] for i in row["passages"]])
+    reference_answer = row["gold"]
+    generated_answer = row["answer"]
 
     faithfulness_score = None
     relevance_score = None
@@ -181,16 +181,9 @@ def main():
         help="Metric to evaluate: 'faithfulness', 'relevance', or 'both' (default: both).",
     )
     parser.add_argument(
-        "--output",
-        type=str,
-        default="evaluation_results.csv",
-        help="Output CSV file name for evaluation results.",
-    )
-    parser.add_argument(
         "--input_file",
         type=str,
-        default="data/data_examples_live_rag_results.csv",  # Renamed for clarity
-        help="Input CSV file path for evaluation data.",
+        help="Path to the input JSONL file.",
     )
     args = parser.parse_args()
 
@@ -202,7 +195,7 @@ def main():
         )
 
     # Load the evaluation data
-    df = pd.read_csv(args.input_file)
+    df = pd.read_json(args.input_file, lines=True)
     results = []
     total_completed = 0
 
@@ -289,10 +282,12 @@ def main():
             )
 
     # Save results to CSV.
+    os.makedirs("data/out", exist_ok=True)
+    fname = os.path.basename(args.input_file).split(".")[0].replace("-result", "")
+    output_file = f"data/out/{fname}-eval.jsonl"
     results_df = pd.DataFrame(sorted_results)
-    results_df.to_csv(args.output, index=False)
-    print(f"\nResults saved to {args.output}")
-
+    results_df.to_json(output_file, orient='records', lines=True, force_ascii=False)
+    print(f"\nResults saved to {output_file}")
 
 if __name__ == "__main__":
     main()
