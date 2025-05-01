@@ -1,146 +1,216 @@
-from ai71 import AI71
-from .pinecone_utils import (
-    query_pinecone,
-    batch_query_pinecone,
-    aggregate_pinecone_context,
-    list_namespaces,
-)
-from .namespace_router import choose_namespaces
-from ai71.exceptions import APIError
+"""
+rag_pipeline.py
+────────────────
+Notes:
+- this dont have reasoning before the final answers.
+- it still hallu and create a duplicated query calls.
+"""
 
-client = AI71()  # Ensure the AI71 client is properly authenticated/configured
+from __future__ import annotations
 
+import os, json
+from typing import Any, List, Tuple
 
-def run_rag_pipeline(question: str) -> str:
+from dotenv import load_dotenv
+import openai
+
+from .pinecone_utils import query_pinecone, list_namespaces
+
+# ─── 0. ENV & CLIENT ----------------------------------------------------
+load_dotenv()
+
+api_key = os.getenv("AI71_API_KEY")
+if not api_key:
+    raise RuntimeError("AI71_API_KEY missing")
+
+base_url = os.getenv("AI71_BASE_URL", "https://api.ai71.ai/v1/")
+client = openai.OpenAI(api_key=api_key, base_url=base_url)
+
+MODEL = "tiiuae/falcon3-10b-instruct"   # one model for everything
+
+# -----------------------------------------------------------------------
+# (1) Helper: parse a JSON tool call from assistant content
+# -----------------------------------------------------------------------
+def _find_first_json_blob(text: str) -> str | None:
     """
-    Run a retrieval-augmented generation (RAG) pipeline:
-      1. Refine the support question for optimal retrieval.
-      2. Automatically route to the most relevant Pinecone namespaces.
-      3. Query Pinecone and aggregate retrieved contexts.
-      4. Generate the final answer using the aggregated context.
+    Returns the first substring that looks like a complete JSON dict.
+    Uses a simple brace-counter so it works with pretty-printed blocks.
     """
-    # Step 1: Refine the question into a better retrieval prompt
-    initial_resp = client.chat.completions.create(
-        model="tiiuae/falcon3-10b-instruct",
-        max_tokens=128,
-        temperature=0.2,
-        top_p=0.1,
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {
-                "role": "user",
-                "content": (
-                    f"Please refine the following support question for optimal information retrieval: "
-                    f"{question}. Provide a step-by-step breakdown—minimal drafts, 5 words per step."
-                ),
-            },
-        ],
-    )
-    query_context = (
-        f"Question: {question}\n\n### Planning to solve problem:"
-        + initial_resp.choices[0].message.content
-    )
-
-    print(f"Refined question for retrieval: {query_context}")
-
-    # Step 2: Choose namespaces via AI routing
-    available_ns = list_namespaces()
-    ns_to_use = choose_namespaces(question, available_ns, votes=4, top_n=2)
-
-    print(f"Chosen namespaces: {ns_to_use}")
-
-    # Step 3: Retrieve and aggregate context
-    pinecone_results = query_pinecone(query_context, top_k=10, namespaces=ns_to_use)
-    aggregated_context = aggregate_pinecone_context(pinecone_results)
-
-    # Step 4: Generate final answer with context
-    final_resp = client.chat.completions.create(
-        model="tiiuae/falcon3-10b-instruct",
-        max_tokens=8192,
-        temperature=0.6,
-        top_p=0.95,
-        messages=[
-            {
-                "role": "system",
-                "content": f"You are a helpful assistant.\n\n### Context: {aggregated_context}",
-            },
-            {
-                "role": "user",
-                "content": question,
-            },
-        ],
-    )
-
-    print(f"Final answer: {final_resp.choices[0].message.content}")
-
-    return final_resp.choices[0].message.content
+    depth = 0
+    start = None
+    for i, ch in enumerate(text):
+        if ch == "{":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0 and start is not None:
+                return text[start : i + 1]
+    return None
 
 
-def run_rag_pipeline_batch(questions: list[str]) -> list[str]:
+def extract_call(msg_content: str | None) -> Tuple[str, dict] | None:
     """
-    Batch RAG:
-      1. Refine each question into a retrieval prompt.
-      2. Pick namespaces once (or you could route per-question).
-      3. Call batch_query_pinecone to get contexts in parallel.
-      4. Fire off the final chat for each question, using its aggregated context.
+    Extracts (tool_name, arguments) from the assistant's plain-text reply.
+    Expected formats (both valid JSON):
+        {"tool": "search_pinecone", "arguments": {...}}
+        {"name": "search_pinecone", "arguments": {...}}
+    Returns None when no valid JSON blob is found.
     """
-    # 1) Refine all questions
-    refined: list[str] = []
-    for q in questions:
-        try:
-            resp = client.chat.completions.create(
-                model="tiiuae/falcon3-10b-instruct",
-                max_tokens=128,
-                temperature=0.2,
-                top_p=0.1,
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {
-                        "role": "user",
-                        "content": (
-                            f"Refine this support question for retrieval: {q}. "
-                            "Give 5 one‑phrase steps."
-                        ),
-                    },
-                ],
-            )
-            refined.append(resp.choices[0].message.content)
-        except APIError:
-            # fallback: use the original question if refine fails
-            refined.append(q)
+    if not msg_content:
+        return None
+    blob_text = _find_first_json_blob(msg_content)
+    if not blob_text:
+        return None
 
-    # 2) Choose namespaces once (you could also do this per-question)
+    # Try strict JSON first; if it fails, strip trailing commas and retry
     try:
-        available = list_namespaces()
-        ns_to_use = choose_namespaces(" / ".join(questions[:3]), available)
-    except Exception:
-        ns_to_use = ["default"]
+        obj = json.loads(blob_text)
+    except json.JSONDecodeError:
+        # Remove any trailing commas before } or ]
+        import re
 
-    # 3) Do one parallel Pinecone call for all refined prompts
-    pinecone_results = batch_query_pinecone(
-        refined, top_k=10, namespaces=ns_to_use, n_parallel=8
-    )
-
-    # 4) For each question, aggregate context and run final chat
-    answers: list[str] = []
-    for q, ctx in zip(questions, pinecone_results):
-        agg = aggregate_pinecone_context(ctx)
+        fixed = re.sub(r",\s*([}\]])", r"\1", blob_text)
         try:
-            final = client.chat.completions.create(
-                model="tiiuae/falcon3-10b-instruct",
-                max_tokens=8192,
-                temperature=0.6,
-                top_p=0.95,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": f"You are a helpful assistant.\nContext: {agg}",
-                    },
-                    {"role": "user", "content": q},
-                ],
-            )
-            answers.append(final.choices[0].message.content)
-        except APIError:
-            answers.append("")  # or some default/fallback
+            obj = json.loads(fixed)
+        except json.JSONDecodeError:
+            return None
 
-    return answers
+    # Normalise field name
+    tool = obj.get("tool") or obj.get("name")
+    if not isinstance(tool, str):
+        return None
+    args = obj.get("arguments", {})
+    if not isinstance(args, dict):
+        args = {}
+    return tool, args
+
+
+# -----------------------------------------------------------------------
+# (2) Main pipeline
+# -----------------------------------------------------------------------
+def run_rag_pipeline(question: str, question_id: str | None = None) -> dict:
+    """Runs the full RAG loop and returns the JSON result block."""
+    all_ns = ",".join([f'"{ns}"' for ns in list_namespaces()])
+
+    system_prompt = f"""\
+You are **DoTA-RAG**, a retrieval-augmented assistant that answers faithfully.
+
+TOOLS
+• search_pinecone(query: str, namespaces: List[str])
+    – Retrieves passages from the specified Pinecone available namespaces.
+    - In query, you should rewrite each query to to get the detail for multi-hop questions.
+• finish_answer(answer: str)
+    – Sends the final answer back to the user.
+
+WORKFLOW
+1. Please think step by step, out loud.
+2. Produce a JSON object **exactly** like this for search pinecone:
+`{{"tool":"search_pinecone","arguments":{{"query":"...","namespaces":["ns1","ns2"]}}}}`
+No extra keys, no trailing commas.
+Use one tools at a time; selected between search_pinecone and finish_answer.
+3. Repeat *search_pinecone* function until the answer and context is refined (maximum 3 times); 
+   each search need to rewrite query to refined the statement. (You should not call the same query)
+4. When the information is enough, please end with **finish_answer** function. Hide chain-of-thought.
+Produce a JSON object **exactly** like this for finish_answer 
+`{{"tool":"finish_answer","arguments":{{"answer":"..."}}}}`
+
+RULES
+- Use one tools at a time
+
+AVAILABLE NAMESPACES
+[{all_ns}]
+"""
+
+    messages: List[dict[str, Any]] = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": question},
+    ]
+
+    trace: List[str] = []
+    passages: List[dict] = []
+    final_answer = "(no answer produced)"
+
+    for _ in range(10):  # safety loop
+        resp = client.chat.completions.create(
+            model=MODEL,
+            messages=messages,
+            # max_tokens=1024,
+            temperature=0.3,
+            top_p=0.4,
+        )
+        msg = resp.choices[0].message
+        messages.append({"role": "assistant", "content": msg.content or ""})
+        trace.append(msg.content or "")
+
+        call = extract_call(msg.content)
+        if call is None:
+            # Nudge the model
+            messages.append(
+                {"role": "system", "content": "Please call search_pinecone or finish_answer with a valid JSON object."}
+            )
+            continue
+
+        fn, args = call
+
+        # ---- search_pinecone ------------------------------------------
+        if fn == "search_pinecone":
+            q = args.get("query", "")
+            ns = args.get("namespaces", ["default"])
+            results = query_pinecone(q, top_k=5, namespaces=ns)
+            
+            snippets = []
+            for m in results.get("matches", []):
+                txt = m["metadata"].get("text", "")
+                if txt:
+                    snippets.append(txt)
+                    passages.append(
+                        {
+                            "doc_id": m["metadata"].get("doc_id", m.get("id", "")),
+                            "passage": txt,
+                        }
+                    )
+
+            # Echo the snippets back so the model can see them
+            messages.append(
+                {"role": "system", "name": f"Called function: {fn}", "content": json.dumps({"passages": snippets})}
+            )
+            # messages.append(
+            #     {"role": "user", "content": "please think step by step about the passages. If it don't have enough infomation please rewrite the sub-query and call the `search_pinecone` function again."}
+            # )
+            trace.append(f"search_pinecone → {len(snippets)} passages")
+            continue
+
+        # ---- finish_answer --------------------------------------------
+        if fn == "finish_answer":
+            final_answer = args.get("answer", "").strip()
+            messages.append(
+                {"role": "system", "name": fn, "content": json.dumps({"status": "ok"})}
+            )
+            trace.append("finish_answer → DONE")
+            break
+
+        # ---- unknown tool ---------------------------------------------
+        messages.append(
+            {"role": "system", "content": f"Unknown function `{fn}`. Use only the defined tools."}
+        )
+        print("trace:\n", trace)
+
+    # Deduplicate & cap supporting passages
+    unique_passages = {p["passage"]: p for p in passages}
+    supporting_passages = list(unique_passages.values())[:10]
+
+    # breakpoint()
+
+    return {
+        "question_id": question_id or "",
+        "question": question,
+        "answer": final_answer,
+        "supporting_passages": supporting_passages,
+        "full_prompt": messages,
+        "reasoning_trace": "\n".join(trace),
+    }
+
+
+__all__ = ["run_rag_pipeline"]

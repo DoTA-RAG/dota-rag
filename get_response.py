@@ -50,11 +50,13 @@ from ai71.exceptions import APIError
 from rag.rag_pipeline import run_rag_pipeline
 import pandas as pd
 from tqdm import tqdm
-
+import json
 
 def main():
     # Read the CSV file
     df = pd.read_csv("data/data_morgana_examples_live-rag.csv")
+    
+    all_answers = []
 
     # Ensure 'response_result' column exists
     df["response_result"] = None
@@ -73,6 +75,7 @@ def main():
         for attempt in range(1, max_retries + 1):
             try:
                 answer = run_rag_pipeline(question)
+                final_answer = answer['answer']
                 break  # success!
             except APIError as e:
                 msg = str(e)
@@ -92,14 +95,18 @@ def main():
                 # unexpected error: log and skip
                 print(f"[{idx}] Unexpected error: {e!r}, skipping question.")
                 break
+        
+        all_answers.append(answer)
+        
+        with open("data/data_morgana_examples_live-rag_results_full.json", 'w') as f:
+            json.dump(all_answers, f, indent=2, ensure_ascii=False)
 
-        df.at[idx, "response_result"] = answer
+        df.at[idx, "response_result"] = final_answer
 
     # Save the updated DataFrame to a new CSV file
     output_file = "data/data_morgana_examples_live-rag_results.csv"
     df.to_csv(output_file, index=False)
     print(f"Results saved to {output_file}")
-
-
+    
 if __name__ == "__main__":
     main()
