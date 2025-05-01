@@ -98,7 +98,9 @@ def process_row(idx, row, eval_metric):
     Returns a dictionary with the row index and evaluation results.
     """
     query = row["question"]
+    # print("n passage:", len(row["passages"]))
     context = "\n\n".join([i['passage'] for i in row["passages"]])
+    # print("n context:", len(context))
     reference_answer = row["gold"]
     generated_answer = row["answer"]
 
@@ -204,7 +206,7 @@ def main():
     cumulative_correct_relevance = 0
 
     # Use a ThreadPoolExecutor to process rows concurrently with 2 workers.
-    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         futures = {
             executor.submit(process_row, idx, row, eval_metric): idx
             for idx, row in df.iterrows()

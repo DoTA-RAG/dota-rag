@@ -86,6 +86,9 @@ def main():
         for attempt in range(1, max_retries + 1):
             try:
                 answer = run_rag_pipeline(question)
+                df.at[idx, "answer"] = answer.get("answer", "")
+                df.at[idx, "final_prompt"] = answer.get("final_prompt", "")
+                df.at[idx, "passages"] = answer.get("passages", "")
                 break  # success!
             except APIError as e:
                 msg = str(e)
@@ -105,10 +108,6 @@ def main():
                 # unexpected error: log and skip
                 print(f"[{idx}] Unexpected error: {e!r}, skipping question.")
                 break
-
-        df.at[idx, "answer"] = answer.get("answer", "")
-        df.at[idx, "final_prompt"] = answer.get("final_prompt", "")
-        df.at[idx, "passages"] = answer.get("passages", "")
 
     # Save the updated DataFrame to a new CSV file
     os.makedirs("data/out", exist_ok=True)
