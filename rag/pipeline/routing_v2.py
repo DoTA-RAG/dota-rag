@@ -62,7 +62,7 @@ def run_rag_pipeline(question: str) -> dict:          # ↓ return type unchange
     # ---------- ★ NEW Step 3a  Dense semantic search (50) ----------
     dense_hits = query_pinecone(
         query_context,
-        top_k=50,                 # was 10
+        top_k=100,                 # was 10
         namespaces=ns_to_use,
     ).get("matches", [])
 
