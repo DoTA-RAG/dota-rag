@@ -1,25 +1,44 @@
 from ai71 import AI71
 from ..pinecone_utils import (
-    query_pinecone,
-    batch_query_pinecone,
-    aggregate_pinecone_context,
-    list_namespaces,
+    query_pinecone,  # unchanged
+    aggregate_pinecone_context,  # unchanged
+    list_namespaces,  # unchanged
 )
 from ..namespace_router import choose_namespaces, extract_boxed
 from ai71.exceptions import APIError
 
-client = AI71()  # Ensure the AI71 client is properly authenticated/configured
+# NEW imports for the two extra pruning stages
+from pinecone import Pinecone
+from rank_bm25 import BM25Okapi  # pip install rank_bm25
+import os
+import numpy as np
+
+client = AI71()
+pc = Pinecone(os.environ["PINECONE_API_KEY"])  # reuse your env var
 
 
-def run_rag_pipeline(question: str) -> str:
-    """
-    Run a retrieval-augmented generation (RAG) pipeline:
-      1. Refine the support question for optimal retrieval.
-      2. Automatically route to the most relevant Pinecone namespaces.
-      3. Query Pinecone and aggregate retrieved contexts.
-      4. Generate the final answer using the aggregated context.
-    """
-    # Step 1: Refine the question into a better retrieval prompt
+def _bm25_prune(question: str, candidates: list, keep: int = 50) -> list:
+    """Reduce `candidates` to BM-25 top-`keep`."""
+    corpus = [c["metadata"]["text"] for c in candidates]
+    bm25 = BM25Okapi([doc.lower().split() for doc in corpus])
+    scores = bm25.get_scores(question.lower().split())
+    top_ix = np.argsort(scores)[::-1][:keep]
+    return [candidates[i] for i in top_ix]  # ⚡ no dict-merge
+
+
+def _cohere_rerank(question: str, docs, top_n: int = 10):
+    resp = pc.inference.rerank(
+        model="cohere-rerank-3.5",
+        query=question,
+        documents=[d.metadata.get("text", "") for d in docs],
+        top_n=top_n,
+        return_documents=False,
+    )
+    return [docs[r.index] for r in resp.data]  # ⚡ objects intact
+
+
+def run_rag_pipeline(question: str) -> dict:  # ↓ return type unchanged
+    # ---------- original Step 1  (question-refine) ----------
     initial_resp = client.chat.completions.create(
         model="tiiuae/falcon3-10b-instruct",
         max_tokens=128,
@@ -30,27 +49,35 @@ def run_rag_pipeline(question: str) -> str:
             {
                 "role": "user",
                 "content": (
-                    f"Please refine the following support question for optimal information retrieval: "
-                    f"{question}. Provide a step-by-step breakdown—minimal drafts, 5 words per step."
+                    f"Please refine the following support question for optimal "
+                    f"information retrieval: {question}. Provide a step-by-step "
+                    f"breakdown—minimal drafts, 5 words per step."
                 ),
             },
         ],
     )
     query_context = f"Question: {question}\n\n### Planning to solve problem:" + initial_resp.choices[0].message.content
 
-    print(f"Refined question for retrieval: {query_context}")
+    # ---------- original Step 2  (namespace routing) ----------
+    ns_to_use = choose_namespaces(question, list_namespaces(), votes=4, top_n=2)
 
-    # Step 2: Choose namespaces via AI routing
-    available_ns = list_namespaces()
-    ns_to_use = choose_namespaces(question, available_ns, votes=4, top_n=2)
+    # ---------- ★ NEW Step 3a  Dense semantic search (50) ----------
+    dense_hits = query_pinecone(
+        query_context,
+        top_k=100,  # was 10
+        namespaces=ns_to_use,
+    ).get("matches", [])
 
-    print(f"Chosen namespaces: {ns_to_use}")
+    # ---------- ★ NEW Step 3b  Sparse BM-25 prune (→ 20) ----------
+    sparse_hits = _bm25_prune(question, dense_hits, keep=20)
 
-    # Step 3: Retrieve and aggregate context
-    pinecone_results = query_pinecone(query_context, top_k=10, namespaces=ns_to_use)
-    aggregated_context = aggregate_pinecone_context(pinecone_results)
+    # ---------- ★ NEW Step 3c  Cohere-3.5 re-rank (→ 10) ----------
+    top_hits = _cohere_rerank(question, sparse_hits, top_n=10)
 
-    # Step 4: Generate final answer with context
+    # ---------- original Step 4  (aggregate & answer) ----------
+    # aggregated_context = aggregate_pinecone_context(top_hits)
+    aggregated_context = "\n\n".join(m["metadata"].get("text", "") for m in top_hits)
+
     final_prompt = f"You are a helpful assistant.\n\n### Context: {aggregated_context}"
     final_resp = client.chat.completions.create(
         model="tiiuae/falcon3-10b-instruct",
@@ -58,22 +85,13 @@ def run_rag_pipeline(question: str) -> str:
         temperature=0.6,
         top_p=0.95,
         messages=[
-            {
-                "role": "system",
-                "content": final_prompt,
-            },
-            {
-                "role": "user",
-                "content": question,
-            },
+            {"role": "system", "content": final_prompt},
+            {"role": "user", "content": question},
         ],
     )
-    final_prompt += f"\n\n### Question: {question}"
     final_answer = final_resp.choices[0].message.content
 
-    print(f"Final answer: {final_answer}")
-
-    # Step 5: Self-reflection
+    # ---------- NEW Step 5  (Simple Self-reflection) ----------
     num_retries = 3
 
     for _ in range(num_retries):
@@ -96,9 +114,9 @@ def run_rag_pipeline(question: str) -> str:
                 {
                     "role": "user",
                     "content": (
-                        f"Question: {question}\n\n"
-                        f"Context: {aggregated_context}\n\n"
-                        f"Model's Answer: {final_answer}\n\n"
+                        f"### Question: {question}\n\n"
+                        f"### Context: {aggregated_context}\n\n"
+                        f"### Model's Answer: {final_answer}\n\n"
                         "Evaluate the answer and provide a revised version in \\boxed{}."
                     ),
                 },
@@ -109,22 +127,15 @@ def run_rag_pipeline(question: str) -> str:
             break
     else:
         print("Failed to extract boxed answer after retries.")
-        revised_ans = final_answer
+        revised_ans = self_reflection_resp.choices[0].message.content
 
-    print(f"Revised answer: {revised_ans}")
-
-    # Format for final answer
-    # https://huggingface.co/spaces/LiveRAG/Challenge/blob/main/Operational_Instructions/Live_Challenge_Day_and_Dry_Test_Instructions.md
-
-    pinecone_results.get("matches", [])[0]["id"]
-    passages = []
-    for m in pinecone_results.get("matches", []):
-        passages.append(
-            {
-                "passage": m["metadata"].get("text", []),
-                "doc_IDs": [m.get("id", "").split("::")[0].replace("doc-", "")],
-            }
-        )
+    passages = [
+        {
+            "passage": m["metadata"].get("text", ""),
+            "doc_IDs": [m.get("id", "").split("::")[0].replace("doc-", "")],
+        }
+        for m in top_hits
+    ]
 
     return {
         "question": question,
@@ -132,74 +143,3 @@ def run_rag_pipeline(question: str) -> str:
         "final_prompt": final_prompt,
         "answer": revised_ans,
     }
-
-
-## Not Implement
-# def run_rag_pipeline_batch(questions: list[str]) -> list[str]:
-#     """
-#     Batch RAG:
-#       1. Refine each question into a retrieval prompt.
-#       2. Pick namespaces once (or you could route per-question).
-#       3. Call batch_query_pinecone to get contexts in parallel.
-#       4. Fire off the final chat for each question, using its aggregated context.
-#     """
-#     # 1) Refine all questions
-#     refined: list[str] = []
-#     for q in questions:
-#         try:
-#             resp = client.chat.completions.create(
-#                 model="tiiuae/falcon3-10b-instruct",
-#                 max_tokens=128,
-#                 temperature=0.2,
-#                 top_p=0.1,
-#                 messages=[
-#                     {"role": "system", "content": "You are a helpful assistant."},
-#                     {
-#                         "role": "user",
-#                         "content": (
-#                             f"Refine this support question for retrieval: {q}. "
-#                             "Give 5 one‑phrase steps."
-#                         ),
-#                     },
-#                 ],
-#             )
-#             refined.append(resp.choices[0].message.content)
-#         except APIError:
-#             # fallback: use the original question if refine fails
-#             refined.append(q)
-
-#     # 2) Choose namespaces once (you could also do this per-question)
-#     try:
-#         available = list_namespaces()
-#         ns_to_use = choose_namespaces(" / ".join(questions[:3]), available)
-#     except Exception:
-#         ns_to_use = ["default"]
-
-#     # 3) Do one parallel Pinecone call for all refined prompts
-#     pinecone_results = batch_query_pinecone(
-#         refined, top_k=10, namespaces=ns_to_use, n_parallel=8
-#     )
-
-#     # 4) For each question, aggregate context and run final chat
-#     answers: list[str] = []
-#     for q, ctx in zip(questions, pinecone_results):
-#         agg = aggregate_pinecone_context(ctx)
-#         try:
-#             final = client.chat.completions.create(
-#                 model="tiiuae/falcon3-10b-instruct",
-#                 max_tokens=8192,
-#                 temperature=0.6,
-#                 top_p=0.95,
-#                 messages=[
-#                     {
-#                         "role": "system",
-#                         "content": f"You are a helpful assistant.\nContext: {agg}",
-#                     },
-#                     {"role": "user", "content": q},
-#                 ],
-#             )
-#             answers.append(final.choices[0].message.content)
-#         except APIError:
-#             answers.append("")  # or some default/fallback
-
-#     return answers
