@@ -55,30 +55,36 @@ python main.py
 
 This script runs the retrieval and generation pipeline, using Pinecone to find relevant context and Falcon-180B-chat to generate a response.
 
+To verify the schema for submiting liverag.
+```bash
+python verify_answer.py sample_answers.jsonl
+```
 ---
 
 ## 📊 Evaluation (Batch Processing)
 
-The repository includes an **evaluation script** that processes multiple questions from a CSV file.
+The repository includes an **evaluation script** that processes multiple questions from a jsonl file.
 
-1. **Prepare your CSV file:**  
+1. **Prepare your jsonl file:**  
    Ensure your file is located at:
    ```
-   data/eval/data_morgana_examples_live-rag.csv
+   data/testset/testset-50q.jsonl
    ```
-   The CSV should contain a column named **`Question`**.
+   The jsonl should contain a column named **`Question`**.
 
 2. **Get response to eval:**
    ```bash
-   python get_response.py
+   python get_response.py data/testset/testset-50q.jsonl
+   # or
+   python get_response.py data/testset/testset-3q.jsonl
+   python verify_answer.py data/out/testset-3q-result.jsonl
    ```
    
 3. **Run judge score:**
 ```bash
    python utils/eval/evaluate.py \
-   --input_file "data/data_morgana_examples_live-rag_results.csv"\
-   --eval_name "both"\ 
-   --output "data/evaluation_results.csv"
+   --input_file "data/out/testset-3q-result.jsonl"\
+   --eval_name "both"
 ```
 
 ---

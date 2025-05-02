@@ -38,7 +38,7 @@ def choose_namespaces(
     for _ in range(votes):
         resp = (
             client.chat.completions.create(
-                model="tiiuae/falcon-180B-chat",
+                model="tiiuae/falcon3-10b-instruct",
                 max_tokens=128,
                 temperature=0.6,
                 top_k=95,
