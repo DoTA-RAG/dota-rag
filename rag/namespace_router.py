@@ -7,7 +7,7 @@ from collections import Counter
 client = AI71()
 
 
-def extract_boxed(text: str) -> list[str] | None:
+def extract_boxed(text: str, self_reflect: bool = False) -> list[str] | None:
     """
     Extracts a list of namespaces from a string of the form \boxed{…}.
     """
@@ -15,6 +15,11 @@ def extract_boxed(text: str) -> list[str] | None:
     if not m:
         return None
     content = m.group(1)
+    
+    # Extract the content after using self-reflection (string)
+    if self_reflect:
+        return content
+
     try:
         return ast.literal_eval(content)
     except Exception:
