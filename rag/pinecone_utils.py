@@ -40,6 +40,7 @@ def query_pinecone(
         metric="cosine",
         include_metadata=True,
         show_progress=False,
+        include_values=True,
     )
 
 
@@ -70,6 +71,7 @@ def batch_query_pinecone(
             metric="cosine",
             include_metadata=True,
             show_progress=False,
+            include_values=True,
         )
 
     with ThreadPool(n_parallel) as pool:

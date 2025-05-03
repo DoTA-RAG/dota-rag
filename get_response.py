@@ -85,7 +85,7 @@ def main():
         max_retries = 5
         for attempt in range(1, max_retries + 1):
             try:
-                answer = run_rag_pipeline(question, mode="routing_v2")
+                answer = run_rag_pipeline(question, mode="routing_v2_no_refine")
                 df.at[idx, "answer"] = answer.get("answer", "")
                 df.at[idx, "final_prompt"] = answer.get("final_prompt", "")
                 df.at[idx, "passages"] = answer.get("passages", "")

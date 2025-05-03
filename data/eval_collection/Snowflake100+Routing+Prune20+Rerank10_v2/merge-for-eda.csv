@@ -1,0 +1,541 @@
+id,doc_id,question_category,question_category_desc,user_category,user_category_desc,question,gold,answer,idx,faithfulness,relevance,faithfulness_correct,relevance_correct
+0,<urn:uuid:d69cbebc-133a-4ebe-9378-68235ec9f091>,non-factoid,A question to get advice or recommendations on a particular topic,expert,a specialized user with deep understanding of the corpus,What makes a Polish pottery piece a Unikat (Signature) item and how is it different from regular pieces?,"A Polish pottery Unikat (Signature) piece is special because it is hand painted using both sponges and brushes, and it is signed by the artist who painted it. These pieces are considered the most involving works of art, with larger Unikat items requiring several hours of very careful work to complete.","A Polish pottery piece is considered a Unikat (Signature) item when it has been hand painted with both sponges and brushes by an artist, and it is signed by the artist who painted it. This means that each Unikat piece is unique, as it is individually crafted and decorated, making it the most intricate and special work of art within the Polish pottery collection. Regular pieces, on the other hand, are usually created using molds and may have more standardized patterns and designs. The Unikat pieces require more time and skill to create, which contributes to their higher value and uniqueness.",0.0,1.0,2.0,1.0,1.0
+1,<urn:uuid:97aa5dda-1935-42ff-9a2c-1f6fb40f49e2>,factoid,"A question seeking a specific, concise piece of information or a short fact about a particular subject, such as a name, date, or number.",novice,a regular user with no understanding of specialized terms.,Can I use a drone to take pictures of Crazy Horse Memorial?,"No, the use of drones/mini-copters is strictly prohibited at Crazy Horse Memorial.","The Crazy Horse Memorial, located in South Dakota, is a large monument under construction that depicts a prominent Native American leader, Crazy Horse. As with many large public monuments and attractions, the use of drones to take aerial photographs may be subject to specific rules and regulations.
+
+As of my last update in 2023, the Crazy Horse Memorial does not have explicit regulations posted on its official website regarding drone usage. However, it is generally advisable to be cautious and respectful when considering drone photography at any public monument or landmark.
+
+Here are some general guidelines you should follow when considering drone photography at any location:
+
+1. **Privacy and Safety**: Drones can be intrusive and pose safety risks to people on the ground. Always prioritize the safety and privacy of others over getting a specific shot.
+
+2. **Local Laws and Regulations**: Check local laws and regulations regarding drone usage. Some areas may have restrictions on flying drones over public monuments, national parks, or other protected sites.
+
+3. **Permission**: If you're planning to use a drone for commercial purposes, such as selling photographs or videos, you generally need permission from the FAA (Federal Aviation Administration) and possibly the site's management.
+
+4. **Respect the Site**: Be mindful of the site's rules and regulations. Even if there are no explicit drone rules, it's important to respect the wishes of the site's management and other visitors.
+
+5. **Safety Precautions**: Always follow safety guidelines when flying a drone, such as maintaining visual line of sight, not flying over crowds, and not flying near airports or other sensitive locations.
+
+Given the lack of specific information on the Crazy Horse Memorial's website, it's best to err on the side of caution and assume that drone photography may be restricted without explicit permission. If you wish to take aerial photographs, it's advisable to contact the memorial's management for clarification on their drone photography policy. This will ensure that you are respecting the rules and guidelines set by the site's management.",1.0,-1.0,-1.0,0.0,0.0
+2,<urn:uuid:e352c255-c89e-4851-bda0-91ff5384e2f8>,non-factoid,A question to get advice or recommendations on a particular topic,novice,a regular user with no understanding of specialized terms.,What's the best way to manage inventory for a service business?,"Service businesses can manage inventory using several methods, including the EOQ (Economic Order Quantity) model for basic inventory control and its extensions. For businesses dealing with uncertain demand and lead times, there are specific models available. The newsvendor problem approach is particularly useful when dealing with perishable items or services with time-sensitive demand.","Managing inventory for a service business can be quite different from managing inventory for a product-based business, but it's still crucial for maintaining efficiency and customer satisfaction. Here are some strategies for effectively managing inventory in a service business:
+
+1. **Track Service Capacity**: Keep track of your service capacity, including the number of available service providers (e.g., technicians, consultants, etc.), their availability, and their skills or certifications. This helps in matching the right service provider to the right job and in managing workloads.
+
+2. **Manage Service Equipment and Supplies**: Just like a product-based business, a service business needs to manage its equipment and supplies. This includes everything from tools and machinery to consumables like cleaning supplies or office materials.
+
+3. **Implement a Work Order System**: A work order system can help track service requests, assign them to the right service provider, and keep track of the progress of each service. This ensures that no service request falls through the cracks and helps in managing service capacity effectively.
+
+4. **Use Scheduling Software**: Scheduling software can help manage service appointments, track service provider availability, and send reminders to clients. This can reduce no-shows and cancellations and help in optimizing service provider time.
+
+5. **Perform Regular Audits**: Regularly audit your inventory of equipment and supplies to ensure you have what you need to provide services. This includes checking for outdated or damaged equipment and ensuring you have enough supplies.
+
+6. **Implement Preventive Maintenance**: For equipment-intensive service businesses, implementing a preventive maintenance schedule can help avoid equipment breakdowns and ensure that you can provide services when needed.
+
+7. **Use Inventory Management Software**: Inventory management software can help track your service equipment and supplies, automate reordering processes, and provide real-time data on your inventory levels.
+
+8. **Maintain Accurate Records**: Keep detailed records of service requests, service provider availability, equipment usage, and inventory levels. This data can be invaluable for making informed decisions about service capacity, equipment needs, and supply ordering.
+
+9. **Forecast Demand**: Just like product-based businesses, service businesses should forecast demand for their services. This can help in planning service capacity, scheduling, and managing inventory levels.
+
+10. **Train Staff**: Ensure that all staff members are trained in inventory management practices and understand the importance of maintaining accurate inventory records. This includes service providers, administrative staff, and anyone else involved in managing inventory.
+
+By implementing these strategies, a service business can effectively manage its inventory, ensuring that it has the right equipment, supplies, and service capacity to meet customer demands efficiently and effectively.",2.0,1.0,2.0,1.0,1.0
+3,<urn:uuid:0fef0d59-5b1b-45b9-a1b3-ab28b94cc3a0>,"Factuality > non-factoid, Premise > direct","A question to get advice or recommendations on a particular topic; question that does not contain any premise or any information about the user) (e.g., ‘what is the fee for speeding in Italy?’)",User-Expertise > novice,a regular user with no understanding of specialized terms.,What are the benefits of having four-day school weeks?,Four-day school weeks help districts save money and recruit teachers.,"The benefits of having a four-day school week include:
+
+1. Financial Savings: By trimming one day off the week, schools can save on bus services, cafeteria costs, and facilities expenses. This can be particularly crucial during state budget shortfalls.
+
+2. Increased Teacher Vitality: Teachers have an extra day to prepare for the following week, grade assignments, and attend professional development, which can lead to improved morale and reduced burnout.
+
+3. Improved Student Engagement: With fewer days spent in school, students may experience increased engagement in class due to the compressed learning schedule, leading to better academic performance.
+
+4. Decreased Student Discipline Problems: Some studies suggest that the four-day week can lead to fewer discipline issues, possibly because students are more engaged and focused during the longer school days.
+
+5. Enhanced Family Time: The extra day off each week provides more time for families to spend together, which can have positive impacts on student well-being.
+
+6. Better Attendance: Both student and teacher attendance can improve, as teachers have more flexibility to manage their personal schedules and students may be more motivated to attend school due to the longer days.
+
+7. More Time for Extracurricular Activities: With fewer days in school, students may have more time to participate in extracurricular activities, sports, clubs, and other enrichment programs.
+
+8. Flexibility for Schools: The four-day week allows for more flexibility in scheduling, including the ability to adjust around national holidays or to accommodate special events.
+
+9. Reduced Learning Loss: Some research indicates that the four-day week can help mitigate summer learning loss, as students are in school more often throughout the year.
+
+10. Improved Community Engagement: The additional day off can lead to increased community involvement, as parents and students may have more time to participate in local events and activities.
+
+It's important to note that while these are potential benefits, the actual outcomes can vary depending on how the four-day week is implemented and managed within a school district.",3.0,1.0,2.0,1.0,1.0
+4,<urn:uuid:56ba3616-46f3-4213-867f-5af764365829>,Factuality > non-factoid; Premise > with-premise,"A question to get advice or recommendations on a particular topic; question starting with a very short premise, where the user reveals their needs or some information about himself (e.g., ‘I have an H1-B visa for the United States. Is there a limit to how many times I can exit and enter the country in a year?’)",User-Expertise > novice,a regular user with no understanding of specialized terms.,I need to set up Postie integration with my system. What credentials do I need to make it work?,You'll need an API Key to enable Postie integration. This API Key can be found in Postie on the API Setup page under Integrations.,"To set up Postie integration with your system, you will need the following credentials:
+
+1. **API Key**: This is your unique identifier for accessing Postie's API. You can find it on the API Setup page in Postie under Integrations.
+
+2. **API Login**: This is your account's API login. You will need to generate an API login if you haven't done so already.
+
+3. **Transaction Key**: This key is used for specific transactions within Postie. You will need to generate a transaction key from your API credentials.
+
+4. **Signature Key**: This is an additional layer of security for your API requests. You will also need to generate a signature key from your API credentials.
+
+Here's a step-by-step guide on how to obtain these credentials:
+
+1. **Access Postie**: Log in to your Postie account.
+
+2. **Navigate to API Credentials**: Go to the API Credentials section. This is where you will generate the necessary keys.
+
+3. **Generate API Key**: If you haven't already, generate your API Key from the API Setup page under Integrations.
+
+4. **Generate API Login**: If required, create an API Login for your account. This might involve a one-time setup process to enable API access.
+
+5. **Generate Transaction Key**: Navigate to the API Credentials page and generate a Transaction Key. You might need to specify the scope or type of transactions for which this key will be used.
+
+6. **Generate Signature Key**: Similarly, generate a Signature Key for added security. This key will be used to sign your API requests, ensuring they are authenticated and secure.
+
+7. **Copy and Paste Credentials**: Once all the keys are generated, copy them and paste them into the appropriate fields in your system where the Postie integration is being set up.
+
+Remember, after generating these keys, they might not be displayed again in the interface, so ensure you have a secure place to store them. These credentials will allow your system to communicate with Postie, enabling you to manage and deploy direct mail campaigns effectively.",4.0,,1.0,0.0,0.5
+5,<urn:uuid:73c9fca1-638b-42df-94f8-c098c8e3faf1>,Factuality > non-factoid; Premise > with-premise,"A question to get advice or recommendations on a particular topic; question starting with a very short premise, where the user reveals their needs or some information about himself (e.g., ‘I have an H1-B visa for the United States. Is there a limit to how many times I can exit and enter the country in a year?’)",User-Expertise > expert,a specialized user with deep understanding of the corpus,I enjoy having drinks with friends but hate leaving my dog at home. Are there any establishments in Cleveland that welcome dogs while serving drinks?,"Yes, the Tremont Taphouse hosts a dog-friendly Yappy Hour every Tuesday throughout the summer to benefit local rescue groups. You can bring your dog and enjoy their large selection of beer and food on the patio. Additionally, Grand River Cellars in Madison hosts a Woof, Wag and Wine event where you can bring your dog while you tour the vineyards and sample wine. Several other bars and wineries also host Yappy Hours throughout the summer.","Yes, Cleveland has a few establishments that welcome dogs while serving drinks. BrewHound Dog Park + Bar and Kanine Social are two popular options. BrewHound offers a rotating variety of local craft beers, wine on tap, and coffee, while also providing an off-leash dog park. Kanine Social serves beer on tap, wine, and ciders, and includes a dog daycare. Both establishments are known for their dog-friendly atmosphere and amenities.",5.0,1.0,2.0,1.0,1.0
+6,<urn:uuid:913e2a78-02f9-480b-9b9f-384f96743e60>,"yes/no question
+",question expecting a yes or no answer,"adult
+",use language appropriate for a litterate adult,Is changing underwear daily considered particularly important for maintaining personal hygiene while camping without shower access?,"Yes, changing underwear daily makes a HUGE difference in feeling fresh while camping without shower access. This is mentioned as one of the key ways to maintain personal hygiene during camping trips, along with brushing teeth with bottled water and putting long hair up in styles like French braids.","Yes, changing underwear daily is considered particularly important for maintaining personal hygiene while camping without shower access. When camping, especially in warm or humid conditions, the body tends to sweat more, which can lead to bacterial growth and odor if the underwear is not changed regularly. Frequent changes help to keep the area clean and dry, reducing the risk of skin irritation and infections. Additionally, it helps in maintaining a level of comfort and freshness during outdoor activities.",6.0,1.0,2.0,1.0,1.0
+7,<urn:uuid:342a6bd4-f513-4985-ac71-95113bf5a3e7>,"yes/no question
+",question expecting a yes or no answer,"adult
+",use language appropriate for a litterate adult,Is the optimal size for most task-oriented groups between 6 and 12 members?,"Yes, 6-12 is considered a workable number for most task-oriented groups. While smaller groups can be effective, having only 3-4 members can make the group temporarily ineffective when members are absent. Larger groups can also work but require more formal organization and leadership, and may face challenges with individual creativity, group cohesion, and the formation of unintended subgroups that can promote conflict.","Yes, according to the information provided, for most task-oriented groups, a size between 6 and 12 members is considered optimal. This range allows for effective collaboration, equitable division of labor, and manageable communication paths. However, the ideal size can vary depending on the specific task, group dynamics, and other factors.",7.0,1.0,2.0,1.0,1.0
+8,<urn:uuid:1fcb46b9-61ea-4794-b7c2-2b370f2aee12>,"yes/no question
+",question expecting a yes or no answer,non (used detault),,Are refunds always processed using the same payment method that was used for the initial purchase?,"Yes, refunds are issued using the same payment method as was used to make the initial transaction. For example, if a credit card was used to make the payment, the refund will be applied to that same credit card.","Yes, refunds are typically processed using the same payment method that was used for the initial purchase. This means if you paid with a credit card, the refund will usually be credited back to that credit card. If you paid with PayPal, the refund will be returned to your PayPal account. However, there may be exceptions to this rule, such as when returning an item in-store where the refund might be given in cash, or if you paid with cash on delivery, the refund might be issued via bank transfer. It's always a good idea to check the specific refund policy of the company you are dealing with, as their procedures may vary.",8.0,1.0,2.0,1.0,1.0
+9,<urn:uuid:a2f739df-f853-4de5-84cd-e9a40bb74a2b>,"yes/no question
+",question expecting a yes or no answer,non (used detault),,Is there a financial penalty for not showing up to a scheduled OWI class in Iowa?,"Yes, there is a $35.00 charge for no-shows or rescheduling of a class.","Yes, there is a financial penalty for not showing up to a scheduled OWI class in Iowa. According to Iowa Code § 321J.11(1), a person convicted of operating while intoxicated (OWI) must complete an alcohol screening evaluation and any recommended follow-up treatment. Failure to attend these classes can result in penalties, which may include fines.
+
+Additionally, Iowa Code § 321J.11(4) states that if a person fails to complete the required alcohol screening evaluation or follow-up treatment, the court may impose a fine of not more than $500 for each violation.
+
+It is important to note that these penalties are in addition to any other consequences of an OWI conviction, such as license suspension, jail time, and ignition interlock device installation. If you are required to attend OWI classes and you are unable to do so, you should contact your court or legal counsel to understand your options and avoid further penalties.",9.0,1.0,2.0,1.0,1.0
+10,<urn:uuid:f60973e0-5155-46f2-955e-0b331b9612e1>,"non-factoid, short",A question to get advice or recommendations on a particular topic. Please be concise as possible,expertise,,I'm interested in emergency management careers. What key capabilities should I develop to assist with both immediate disaster response and long-term recovery efforts?,"To work in emergency management, you should develop capabilities in multiple areas: traditional preparedness and response activities, recovery efforts to help disaster-affected people return to normal life, and mitigation planning to prevent future damages. You should also understand how social and physical factors interact in disasters, and be familiar with a broad range of technological and environmental risks","To succeed in an emergency management career, it's important to develop a range of capabilities that support both immediate disaster response and long-term recovery efforts. Here are some key capabilities to consider:
+
+1. **Incident Command System (ICS) Knowledge**: Familiarize yourself with ICS, as it is the standard for managing incidents in the United States. Understanding ICS principles will enable you to coordinate and manage resources effectively during both response and recovery phases.
+
+2. **Emergency Operations Planning**: Develop skills in creating, maintaining, and updating emergency operations plans (EOPs). These plans are crucial for organizing the response and recovery efforts.
+
+3. **Public Information and Communication**: Be able to communicate effectively with the public, media, and other stakeholders. This includes creating and disseminating clear, concise, and accurate information during emergencies.
+
+4. **Resource Management**: Learn how to identify, acquire, and allocate resources efficiently. This includes understanding logistics, supply chain management, and procurement processes.
+
+5. **Damage Assessment and Recovery Planning**: Gain expertise in conducting damage assessments and developing recovery plans. This involves working with various stakeholders to prioritize recovery efforts and allocate resources effectively.
+
+6. **Leadership and Team Management**: Develop strong leadership skills to guide and motivate teams during high-stress situations. Effective team management is crucial for coordinating the efforts of multiple agencies and organizations.
+
+7. **Risk and Hazard Analysis**: Understand how to assess risks and hazards to better prepare for potential emergencies. This includes identifying vulnerabilities and developing mitigation strategies.
+
+8. **Intergovernmental Coordination**: Learn to work across different levels of government and with various agencies. Effective coordination is essential for a cohesive response and recovery effort.
+
+9. **Legal and Ethical Considerations**: Understand the legal framework within which emergency management operates, including emergency powers, liability issues, and ethical considerations in decision-making.
+
+10. **Community Engagement**: Develop skills in engaging with community members, organizations, and businesses. Building strong community partnerships can enhance preparedness, response, and recovery efforts.
+
+11. **Adaptability and Flexibility**: Emergencies are unpredictable. Being able to adapt to changing situations and think on your feet is crucial for effective emergency management.
+
+12. **Physical and Mental Resilience**: Emergency management can be physically and emotionally demanding. Building resilience can help you sustain your effectiveness during prolonged or intense emergencies.
+
+13. **Continual Learning and Professional Development**: The field of emergency management is constantly evolving. Engage in ongoing training and professional development to stay current with best practices and emerging trends.
+
+By focusing on these capabilities, you will be better prepared to handle the challenges of both immediate disaster response and long-term recovery efforts in an emergency management career.",10.0,,2.0,0.0,1.0
+11,<urn:uuid:cc257769-02c7-47d8-be96-33de5ea69eaf>,non-factoid,A question to get advice or recommendations on a particular topic. Please be concise as possible,expertise,,What are the best safety features to look for in a cable cutting machine for automotive applications?,"For cable cutting machines in automotive applications, key safety features include shock absorbers and pneumatic clamping elements. Specifically, maintenance-free hydraulic shock absorbers protect both personnel and equipment by ensuring gentle impact of moving parts, while pneumatic clamping elements provide protection by immediately clamping if pressure is lost during operation. The clamping elements also prevent movement during cutting, which is crucial as even slight cutting inaccuracies can have serious consequences in automotive applications.","When selecting a cable cutting machine for automotive applications, safety should be a top priority. Here are some key safety features to look for:
+
+1. **Interlock Switches**: These switches prevent the machine from operating unless safety guards are in place. This ensures that operators are protected from direct contact with moving parts.
+
+2. **Guard Rails and Barriers**: These physical barriers can prevent accidental contact with the cutting mechanism, especially during the operation of the machine.
+
+3. **Emergency Stop (E-Stop) Buttons**: These buttons allow operators to immediately halt the machine's operation in case of an emergency or if a hazardous situation arises.
+
+4. **Blade Safety Covers**: Many cable cutting machines have covers that shield the cutting blade when the machine is not in use or when maintenance is required.
+
+5. **Automatic Blade Engagement/Disengagement**: This feature ensures that the cutting blade only engages when the machine is properly set up and ready to operate, reducing the risk of accidental activation.
+
+6. **Vibration and Noise Reduction**: Machines designed with vibration and noise reduction features can help prevent operator fatigue and minimize the risk of accidents caused by distractions.
+
+7. **Stable Base**: A machine with a stable base reduces the risk of tipping or shifting during operation, which could lead to injuries.
+
+8. **Adjustable Cutting Depth**: Allowing the operator to set the cutting depth can help prevent over-cutting or under-cutting, both of which can cause accidents or equipment damage.
+
+9. **Clear Instructions and Indicators**: Machines with clear visual and auditory indicators for status, settings, and warnings can help operators use the equipment safely and effectively.
+
+10. **Regular Maintenance and Inspection Requirements**: A machine that requires regular maintenance and inspection can help ensure that all safety features are functioning correctly and that the machine is in optimal condition.
+
+11. **Safety Training and Documentation**: Machines that come with comprehensive safety documentation and training materials can help operators understand how to use the equipment safely and efficiently.
+
+12. **Compliance with Safety Standards**: Look for machines that comply with relevant safety standards such as OSHA (Occupational Safety and Health Administration) or ISO (International Organization for Standardization) guidelines, which provide benchmarks for safe operation.
+
+By prioritizing these safety features, you can ensure that your cable cutting machine is not only effective for automotive applications but also safe to operate. Always consult with the manufacturer or a safety professional to ensure that the machine is suitable for your specific needs and environment.",11.0,1.0,2.0,1.0,1.0
+12,<urn:uuid:eeb57667-91f9-46e4-a2e7-8e230d41974c>,non-factoid,A question to get advice or recommendations on a particular topic. Please be concise as possible,expertise,,I'm interested in the paranormal history of New Orleans - what guided tours would you recommend?,"New Orleans offers several paranormal-themed tours. You can take the Vampire Walking Tour to explore the dark world of the undead, join the Ghosts of New Orleans Tour to visit the city's most haunted locations, or experience the Voodoo Queen of New Orleans Tour which includes stops at an authentic voodoo shop and a voodoo ceremony viewing.","There are several guided tours in New Orleans that focus on the city's paranormal history. Here are some recommendations:
+
+1. **New Orleans Ghost Adventure**: This tour takes you to real haunted locations and provides historical context for the ghostly tales. You might even capture something paranormal on camera!
+
+2. **New Orleans Ghost, Voodoo and Vampire Tour**: This tour delves into the city's rich history of ghosts, vampires, and Voodoo practices. You'll learn about the infamous Marie Laveau and hear some truly chilling stories.
+
+3. **Bloody Mary's French Quarter Supernatural Tour**: This tour combines a ghost hunt with a walking tour, led by a Voodoo priestess. You'll explore the city's haunted sites and even get to try some Voodoo rituals.
+
+4. **Haunted History of New Orleans**: This tour focuses on the darker side of New Orleans history, including murder, suicide, and supernatural encounters. It's a fascinating look at the city's past.
+
+5. **French Quarter Haunted Excursion**: This tour offers a spooky journey through the French Quarter, exploring the city's most haunted places and hearing eerie tales of ghosts and legends.
+
+Each of these tours offers a unique perspective on New Orleans' paranormal history, so you can choose the one that best suits your interests.",12.0,1.0,2.0,1.0,1.0
+13,<urn:uuid:a69bf583-1246-4611-9de5-dbcffb3a98dc>,non-factoid,A question to get advice or recommendations on a particular topic.,expertise,,I'm interested in the short films produced in Spain in 1997 - could you recommend some notable works from that period?,"There were several notable short films produced in Spain in 1997, including 'La Vaca Lechera' by various directors including Mariano Agudo, Julio Sánchez, Alejandro Catalán, Ana Rosa Diego, and Daniel de Zayas. Other significant works from that year include 'Historia de los Fluidos' by David Cantero and Gervasio Iglesias, 'La Muerte de Nuevo' by Antonio Perumanes and Jesús Ponce, and 'El Ladrón de Sueños' which involved Alberto Rodríguez, Miguel Aparicio, Daniel Cubertas, and Paco R. Baños.","Certainly! Here are some notable Spanish short films from 1997:
+
+1. **Mariano Agudo & Julio Sánchez - ""LA VACA LECHERA"" (The Milk Cow)**: This film is a quirky and imaginative piece that tells a simple yet profound story.
+
+2. **Alejandro Catalán - ""Alejandro Catalán""**: Known for his experimental approach, Catalán's work is a testament to his innovative style.
+
+3. **Ana Rosa Diego - ""Ana Rosa Diego""**: Diego's work often explores the human condition with a touch of surrealism.
+
+4. **Daniel de Zayas - ""Daniel de Zayas""**: De Zayas is known for his unique visual storytelling, and this short is a good example of his style.
+
+5. **David Cantero & Gervasio Iglesias - ""HISTORIA DE LOS FLUIDOS"" (The Story of Fluids)**: This film is a visually striking exploration of a common yet often overlooked aspect of life.
+
+6. **Antonio Perumanes - ""LA MUERTE DE NUEVO"" (Death Again)**: Perumanes' work often delves into darker themes, and this short is a good representation of his style.
+
+7. **Jesús Ponce - ""Jesús Ponce""**: Ponce's work is characterized by its emotional depth and strong narrative structure.
+
+8. **Alberto Rodríguez - ""EL LADRÓN DE SUEÑOS"" (The Thief of Dreams)**: This film is a captivating exploration of dreams and reality.
+
+9. **Miguel Aparicio - ""Miguel Aparicio""**: Aparicio's work often features a blend of humor and drama, making for engaging storytelling.
+
+10. **Daniel Cubertas - ""Daniel Cubertas""**: Cubertas' short films are known for their poetic imagery and emotional resonance.
+
+11. **Paco R. Baños - ""Paco R. Baños""**: Baños' work often features a mix of fantasy and reality, creating a unique viewing experience.
+
+12. **Daniello Mortimore - ""HOLA SOY JOHN FORD Y HAGO PELÍCULAS"" (Hello, I'm John Ford and I Make Films)**: This film is a playful homage to classic cinema.
+
+13. **Álvaro Alonso - ""AL FINAL, FIN: EL ROLLO DE LA CAJA"" (At the End, End: The Roll of the Box)**: Alonso's work often combines elements of drama and humor.
+
+Each of these films offers a unique perspective and showcases the diversity and creativity of Spanish cinema in 1997.",13.0,0.0,1.0,0.0,0.5
+14,<urn:uuid:a05a4b9f-02db-48fd-b989-ca877ea9a021>,non-factoid,A question to get advice or recommendations on a particular topic.,expertise,,"Which Arduino board would you recommend for large-scale projects requiring extra memory and pins?
+
+",The Arduino Mega 2560 is designed for ambitious projects that require additional pins and extra memory.,"For large-scale projects requiring extra memory and pins, I would recommend the Arduino Mega 2560. It offers 256 KB of flash memory, 8 KB of SRAM, and 4 KB of EEPROM, which is significantly more than the standard Arduino Uno. Additionally, it has 54 digital input/output pins (of which 14 can be used as PWM outputs) and 16 analog input pins, providing ample space for more complex projects.",14.0,1.0,2.0,1.0,1.0
+15,<urn:uuid:3c761ddc-1a2b-4254-bda1-aabc5c67b873>,"without-premise, factoid,concise and natural","A direct question that does not contain any premise or any information about the user.
+a question seeking a specific, concise piece of information or a short fact about a particular subject, such as a name, date, or number.
+phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure. It is a concise direct question consisting of less than 10 words.",non (used detault),,What is the highest honor in Alberta?,The Alberta Order of Excellence is the highest honour the Province of Alberta can bestow on a citizen.,"The highest honor in Alberta is the Medal of Honor, which is the nation's highest medal for valor in combat awarded to members of the armed forces. It is bestowed only to the bravest of the brave, and that valor must be well-documented.",15.0,-1.0,-1.0,0.0,0.0
+16,<urn:uuid:9cebd1f6-47db-426d-a754-7b7ab48ec49a>,"with-premise, open-ended,verbose and natural","A question starting with a very short premise, where the user reveals his needs or some information about himself.
+a question to get advice or recommendations on a particular topic
+phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure. It is a a relatively long question consisting of more than 9 words.",common person,"a common person who is not expert of the subject discussed in the document, therefore he asks basic questions.","I need to express regret for something I did, but I want to use a different word than 'sorry.' What are some alternative words I can use to express an apology?","When expressing regret or asking for pardon, you can use several alternatives to the word 'apology.' These include: excuse, mea culpa, or regret (used in plural form).","Certainly! Here are some alternative words and phrases you can use to express regret or apologize:
+
+1. **Regret**: ""I regret my actions.""
+2. **Apologies**: ""I apologize for my behavior.""
+3. **Missteps**: ""I made a misstep, and I want to acknowledge that.""
+4. **Mistake**: ""I made a mistake, and I'm here to make things right.""
+5. **Mistaken**: ""I was mistaken, and I'm truly sorry for my actions.""
+6. **Apologies for the inconvenience**: ""I'm truly sorry for any inconvenience my actions have caused.""
+7. **I'm at fault**: ""I am at fault for what happened, and I take full responsibility.""
+8. **I understand**: ""I understand how my actions have affected you, and I'm here to make it right.""
+9. **I was wrong**: ""I was wrong, and I want to express my sincere regret.""
+10. **I was thoughtless**: ""I was thoughtless, and I deeply regret my actions.""
+
+Remember, the tone in which you deliver your apology can be just as important as the words you choose. Make sure your body language and voice convey sincerity and empathy.",16.0,1.0,2.0,1.0,1.0
+17,<urn:uuid:99d5579c-2466-466d-98e0-5af24d267cc4>,"open-ended,verbose and natural","a question to get advice or recommendations on a particular topic
+phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure. It is a a relatively long question consisting of more than 9 words.",expert,a specialized user with deep understanding of the corpus,I'm curious about how the famous La Tomatina festival in Spain actually started - could you tell me about the unexpected events that led to its creation?,"La Tomatina started accidentally in August 1945 during a Giants and Big-Heads figures parade. When a person fell off a float during a celebration with a musician, they began hitting people in their path, causing an uproar. People then started throwing tomatoes from a nearby vegetable stand at each other. In subsequent years, locals had conflicts with authorities and were even briefly jailed, until the town finally got permission to make it an official annual event.","The exact origins of the La Tomatina festival are a bit of a mystery, but there are several popular stories about how it began. One of the most widely accepted theories suggests that the festival started in the 1940s. Here's a version of the story:
+
+In the 1940s, there was a local parade in the town of Buñol, Spain, to honor the town's patron saint, Saint Louis Bertrán. The parade was to take place on the last Wednesday of August. However, a group of young men were not pleased with the parade and decided to protest by throwing tomatoes at each other and the participants. The tomatoes were likely sourced from a nearby fruit stand, and this spontaneous tomato fight quickly escalated into a full-blown food fight.
+
+The event was so much fun that the townspeople decided to repeat it the following year. Over time, the tomato fight grew in popularity, and by the late 1950s, it had become an official annual event. The town's authorities embraced the festival, and it has since evolved into the massive, organized celebration it is today, drawing thousands of visitors from around the world.
+
+Another version of the story suggests that the festival began in 1945, when a group of young men threw tomatoes at each other during a parade, and the tradition continued the following year. Yet another theory points to a group of friends who started the tradition by throwing tomatoes at each other during a picnic in 1944.
+
+Regardless of its exact origins, La Tomatina has become a beloved tradition in Buñol, Spain, and an iconic event that showcases the country's spirit of fun and celebration.",17.0,1.0,1.0,1.0,0.5
+18,<urn:uuid:b4d7a2a2-b545-4437-b9bc-1a255505b832>,Clarification,"A question seeking further explanation or details about a specific concept, term, or methodology",Expert,A specialized user with deep understanding of the subject matter,What statistical analysis methods were used to examine the relationship between children's STEM interests and their friends' attitudes towards science and engineering?,"Two main statistical methods were used: T-Tests and regression models. T-Tests were used to compare differences in STEM interests between girls and boys across different areas. Regression models were then utilized to analyze the relationship between participants' friends thinking science and engineering are cool and their own enjoyment in finding out about STEM areas. The regression models revealed statistically significant and positive relationships, showing predictive qualities without proving causation.","The statistical analysis methods used to examine the relationship between children's STEM interests and their friends' attitudes towards science and engineering included T-Tests and regression models. The T-Tests were used to compare the average ratings of liking learning about different STEM topics between boys and girls. Regression models were employed to analyze the relationship between participants' friends thinking science and engineering are cool and their own enjoyment in finding out about Life Science, Earth Science, and Technology and Engineering.",18.0,1.0,2.0,1.0,1.0
+19,<urn:uuid:ce1a9862-3acc-47fe-a46f-5d9cba25c524>,Comparison,"A question that compares the information in the document to other studies, perspectives, or contexts",Expert,A specialized user with deep understanding of the subject matter,How do the storage capabilities of optical computing systems based on 'fast and slow' light compare to current electronic storage methods?,"Currently, light signals cannot yet be stored directly or used for computation, despite being used for communication over fiber optic cables. To achieve storage, light signals would need to be slowed down so they can be buffered within a small area, which could be accomplished by exploiting 'fast and slow' light effects. The long-term goal is to boost processing speeds and data storage densities by several orders of magnitude while dramatically lowering energy consumption compared to current electronic systems.","Optical computing systems based on ""fast and slow"" light have the potential to significantly enhance data storage capabilities compared to current electronic storage methods. Here's how they stack up:
+
+1. **Data Density**: Optical systems can potentially offer much higher data density. By manipulating light, it's possible to encode more information per unit area than with traditional magnetic or semiconductor-based storage. This is because the wavelength of light is much smaller than the size of electronic components, allowing for finer detail and thus higher storage capacity.
+
+2. **Access Speed**: Optical systems could provide faster data access times. Light travels faster than electrical signals, which means data retrieval could be quicker in optical systems. The ability to slow down light (""slow light"") can also be used to buffer data within a small area, further enhancing storage and processing capabilities.
+
+3. **Energy Efficiency**: Optical storage and computation are expected to be more energy-efficient than electronic methods. Photons do not dissipate energy as heat like electrons do, which means less energy is wasted. This is particularly important for large data centers and high-performance computing systems where energy consumption is a significant concern.
+
+4. **Interference and Noise**: Optical systems can operate with less interference and noise compared to electronic systems. This is because photons do not interact with each other as strongly as electrons do, reducing the chances of data corruption and improving reliability.
+
+5. **Scalability**: Optical computing and storage have the potential for greater scalability. As technology advances, it might be easier to scale up optical systems to handle exponentially larger amounts of data without the same physical constraints that apply to electronic systems.
+
+6. **Radiation Resistance**: Optical storage devices are less susceptible to radiation damage, making them more suitable for use in environments where exposure to radiation is a concern, such as space or nuclear facilities.
+
+7. **Parallelism**: Optical systems can take advantage of the inherent parallelism of light, allowing for simultaneous processing of multiple data streams, which can greatly enhance computational power.
+
+However, it's important to note that while these advantages are promising, practical implementation of optical storage and computing systems based on ""fast and slow"" light technology is still in its early stages. Challenges remain in terms of cost, manufacturing, and the integration of optical components with existing electronic infrastructure. Nonetheless, the potential for optical systems to revolutionize data storage and computing is a topic of active research and development.",19.0,,2.0,0.0,1.0
+20,<urn:uuid:1847e3e0-9ee7-4469-b888-23ed9406c096>,Opinion,A question asking for a subjective viewpoint,Layman,"A user with little to no specialized knowledge in the subject, seeking simple, clear, and easy-to-understand explanations","What makes philosophy valuable even though it doesn't give us definite answers?
+","The value of philosophy lies largely in its uncertainty. While it may not provide definite answers, philosophy helps free us from the prejudices of common sense and habitual beliefs. It suggests many possibilities that expand our thoughts, reduces dogmatic certainty, and helps us see familiar things in unfamiliar ways. This keeps alive our sense of wonder and increases our knowledge of what things may be, even if we become less certain about what things are.","Philosophy, despite not providing definite answers to many of life's questions, is valuable for several reasons. It helps cultivate critical thinking skills, encourages questioning and reflection, and promotes a deeper understanding of oneself and the world. By exploring various perspectives and arguments, philosophy allows individuals to develop a more nuanced and thoughtful approach to life's complexities, even if it doesn't resolve every question.",20.0,1.0,2.0,1.0,1.0
+21,<urn:uuid:98f236b8-10e0-469e-869e-8e07eabd0aeb>,Factual,"A question that seeks an objective, verifiable answer based on established facts or data.",Expert,A specialized user with deep understanding of the subject matter,What are the specific age requirements for interstate versus intrastate commercial driving operations?,"For interstate operation, you must be at least 21 years of age. However, for intrastate operation (within the state), you may be allowed to be licensed at 18 years of age.","For interstate commercial driving operations, drivers must be at least 21 years old. However, for intrastate (within the state) operations, drivers may be allowed to be licensed as young as 18 years old, depending on the specific state regulations. It's important to check the requirements of the state in which you plan to operate your commercial vehicle.",21.0,1.0,2.0,1.0,1.0
+22,<urn:uuid:2a47747c-7ef0-40a3-978b-c69757d569d9>,Opinion,A question asking for a subjective viewpoint,Layman,"A user with little to no specialized knowledge in the subject, seeking simple, clear, and easy-to-understand explanations",What kind of gameplay features can I expect from Crimson Spires? I'm curious about how it plays.,"Crimson Spires is a visual novel that blends 2D character art with 3D exploration. Players can freely navigate building interiors in first-person perspective. The game features multiple romance paths, each with distinct narratives, and includes English voice acting for key scenes. There's also a New Game Plus mode that unlocks after completing all story routes, adding extra story content and leading to a climactic finish based on player choices.","Crimson Skies offers a unique blend of flight simulation and arcade action set in a 1930s-inspired world. Here are some gameplay features you can expect:
+
+1. **Flight Mechanics**: The game provides a realistic flight simulation experience, allowing you to control your aircraft using both analog and digital controls. You can perform maneuvers like loops, dives, and barrel rolls, and experience realistic physics such as weight shift and control responsiveness.
+
+2. **Combat System**: Battles in Crimson Skies are fast-paced and intense. You'll engage in dogfights with other planes using a variety of weapons, including machine guns, cannons, and rockets. The game features a lock-on system that helps you target enemies, and you can perform special moves like flips and dodges to evade enemy fire.
+
+3. **Customization**: You can customize your aircraft by purchasing upgrades and modifications. This includes choosing different engines, armors, and payloads, allowing you to tailor your plane to your preferred style of combat.
+
+4. **Story Missions**: The game is driven by a narrative that unfolds through a series of missions. You'll play as Nathan Zachary, a heroic figure fighting against injustice and corruption in the skies. The missions are varied, ranging from dogfights and bombing runs to stealth operations and espionage.
+
+5. **FMV Cutscenes**: The game features full-motion video (FMV) cutscenes that provide context and advance the story. These scenes are set in a black-and-white style reminiscent of old Hollywood films, adding to the game's immersive atmosphere.
+
+6. **Instant Action Mode**: For those who prefer a more casual experience, Crimson Skies offers an Instant Action mode where you can engage in quick, action-packed flights without worrying about the story or mission objectives.
+
+7. **World and Atmosphere**: The game's world is richly detailed, with a variety of locations including bustling cities, desolate islands, and the vast skies above. The soundtrack, voice acting, and visual design all contribute to a 1930s aesthetic that feels both familiar and exotic.
+
+Overall, Crimson Skies is a game that offers a thrilling mix of flight simulation and action, set in a beautifully crafted world that captures the spirit of adventure and danger associated with the golden age of piracy and aviation.",22.0,1.0,-1.0,1.0,0.0
+23,<urn:uuid:25e8ccb6-35cb-4f4d-84d0-276b5dc33368>,non-factoid,A question to get advice or recommendations on a particular topic,expert,a specialized user with deep understanding of the corpus,What are the specific features and benefits of the Child Care Plus savings product for parents looking to save their child benefit payments?,"The Child Care Plus product allows you to save your monthly child benefit payment. After the first twelve months of contributions, the savings are then invested for an additional five years.
+","The Child Care Plus savings product is designed to help parents save their monthly child benefit payments. Here are some specific features and benefits of this product:
+
+Features:
+1. Monthly Contributions: Parents can save their monthly child benefit payment directly into the Child Care Plus account.
+2. Automatic Investment: After twelve months, the monthly contributions are automatically invested for a further five years.
+3. Lump Sum Savings: The product also allows parents to save a lump sum for a fixed term of 3, 4, 5, or 10 years.
+4. No Fees, Charges, Taxes, or Commission: The savings are protected by the Irish State, and there are no additional fees or charges associated with the product.
+
+Benefits:
+1. Financial Security: The product helps parents create a fund for their child's future, which can be used for education, marriage, or other important life goals.
+2. Early Savings: By starting to save early, parents can take advantage of the power of compound interest, allowing their savings to grow over time.
+3. Tax-Efficient Savings: Since the savings are protected by the Irish State, they may be eligible for tax benefits, helping parents save more effectively.
+4. Flexibility: With the option to save monthly contributions or a lump sum, parents can choose the savings method that best fits their financial situation.
+5. Peace of Mind: Knowing that they have a savings plan in place for their child's future can provide parents with peace of mind and reduce financial stress.
+
+Overall, the Child Care Plus savings product offers parents a convenient and tax-efficient way to save their child benefit payments, helping to ensure their child's financial security in the future.",23.0,1.0,1.0,1.0,0.5
+24,<urn:uuid:fc6e7e4f-b3ab-4ec8-9f24-dce7c264b5e6>,non (used detault),,non (used detault),,"What are the edible parts of the Glacier lily and how do they taste?
+","The Glacier lily has several edible parts: The corm (underground stem) is edible raw but tastes better when cooked and is easier to digest that way. The stems and leaves are also edible but less nutritious than the corms, and can be added to salad greens. The seedpod, which appears after flowering, can be eaten raw or cooked and tastes similar to green beans. However, these wild edibles should be eaten in moderation to avoid stomach upset.","The Glacier lily, also known as Erythronium grandiflorum, is a bulbous perennial plant native to North America. It is part of the Amaryllidaceae family and is often found in mountainous regions, particularly in the western United States and Canada.
+
+The edible parts of the Glacier lily are the bulbs. These bulbs can be eaten raw or cooked. When raw, they have a mildly sweet and nutty flavor, somewhat similar to a combination of onion and garlic. Cooking the bulbs mellows out the flavor, making them more palatable for some.
+
+To prepare Glacier lily bulbs for eating, you must first carefully peel off the outer layer. The inner part of the bulb is soft and can be sliced or diced. They can be used in various dishes such as salads, stir-fries, or even baked into a casserole.
+
+It's important to note that while the bulbs are edible, the rest of the plant is not recommended for consumption. The leaves and flowers contain alkaloids, which can be toxic if ingested. Additionally, some people may experience allergic reactions to the plant. As with all wild edibles, it's crucial to properly identify the plant and to consume it in moderation to avoid potential adverse effects.",26.0,,2.0,0.0,1.0
+25,,,,,,,,,27.0,1.0,2.0,1.0,1.0
+26,<urn:uuid:1e621434-4cfc-43c9-b4c9-2e1a764e784c>,artistic,A question with artistic taste and style,non (used detault),,"How did Nat King Cole's musical career evolve in the 1940s?
+","Nat King Cole, born in March 1919, began as a rhythm and blues performer with a trickster's manner. He successfully crossed over to appeal to white audiences with his 1943 song 'Straighten Up and Fly Right' and further strengthened this connection with 'The Christmas Song' in 1946.
+","In the 1940s, Nat King Cole's musical career evolved significantly. Initially known for his jazz piano playing, Cole formed the King Cole Trio with guitarist Oscar Moore and bassist Wesley Prince. The trio was one of the first to gain acceptance in ""white"" jazz clubs, a significant step in the era of segregation.
+
+Cole's career took a major turn in 1943 when he began to incorporate his singing into his performances. This move was influenced by a drunken patron who demanded that he sing, and Cole obliged by performing ""Sweet Lorraine."" This event, though often exaggerated in its retelling, marked a pivotal moment in his career as it led to more vocal performances.
+
+Cole's first mainstream vocal hit, ""Straighten Up and Fly Right,"" was recorded in 1943 and became a major success, proving that folk-based material could appeal to a wide audience. This success led him to gradually move away from jazz piano and focus more on popular vocals.
+
+Throughout the late 1940s, Cole's popularity continued to grow with hits such as ""The Christmas Song,"" ""Nature Boy,"" ""Mona Lisa,"" ""Too Young,"" and his signature tune ""Unforgettable."" While some jazz critics and fans accused him of selling out by moving away from pure jazz, Cole's appeal as a popular singer was undeniable.
+
+Despite these accusations, Cole never totally abandoned his jazz roots. He continued to perform and record jazz music, including an all-jazz album, ""After Midnight,"" in 1956. Cole's ability to bridge the gap between jazz and popular music and his smooth, sophisticated style of singing made him a beloved figure in American music during the 1940s and beyond.",28.0,1.0,2.0,1.0,1.0
+27,<urn:uuid:aaf36584-210c-4325-9832-5ef6561fd796>,"long,
+hard","a long question with at least 7 words,
+hard question that is not easy to answer",non (used detault),,What was the educational purpose behind the Endeavour College Year 9 band sharing their musical learning experience?,"The purpose was to encourage students to learn music, with the band members sharing their enthusiasm for playing and performing while demonstrating what they have been learning in their music classes through an engaging interactive performance.","The educational purpose behind the Endeavour College Year 9 band sharing their musical learning experience was to engage students, demonstrate what they have learned, foster enthusiasm for music, and encourage others to learn music. This performance also strengthened the Connected Schools relationship by providing an opportunity for old scholars to connect and for learning to take place.",29.0,1.0,2.0,1.0,1.0
+28,<urn:uuid:7ef0cf77-a406-4750-beb2-be4205253fd4>,"long,
+simple","a long question with at least 7 words,
+a simple question that is easy to answer",non (used detault),,What are the three main emotional challenges parents face when having a child with Cerebral Palsy?,"The three main emotional challenges that parents face when having a child with Cerebral Palsy are guilt, loss, and regret. Guilt can stem from feeling responsible for their child's condition or from concerns about overprotecting them. Loss relates to grieving the able-bodied life their child won't have, while regret often follows closely with loss and relates to the daily activities their child may miss out on.","The three main emotional challenges parents face when having a child with Cerebral Palsy are guilt, loss, and regret. Guilt can arise from feelings of responsibility for the child's condition, fear of not being there enough for the child, or overprotecting the child. Loss and regret are often related, with parents experiencing grief over the child not having the life they had imagined, as well as regret over missed opportunities and potential barriers the child may face due to the condition.",30.0,1.0,2.0,1.0,1.0
+29,<urn:uuid:3143f0c3-57e5-4019-a2eb-7402f9091479>,"long,
+fancy language","a long question with at least 7 words,
+a question phrased with fancy English",non (used detault),,How does nicotine consumption affect the health of intervertebral discs in the human body?,"Nicotine can damage the microvasculature system, which consists of small blood vessels that line either side of the intervertebral discs and provide them with nourishment. When these blood vessels are damaged, the discs receive improper nourishment and degenerate faster.","Nicotine consumption can negatively affect the health of intervertebral discs in the human body. Intervertebral discs are responsible for providing flexibility, shock absorption, and cushioning between the vertebrae in the spine. They rely on a constant supply of nutrients and oxygen to maintain their health and function.
+
+Nicotine, found in tobacco products, can constrict blood vessels and reduce blood flow. This can lead to a decrease in the delivery of oxygen and nutrients to the intervertebral discs. As a result, the discs may become dehydrated and lose their ability to absorb shock and maintain proper spinal alignment.
+
+Additionally, nicotine can cause damage to the microvasculature, which is the small network of blood vessels that supply the discs with nutrients. This damage can further impair the discs' ability to receive the necessary nutrients and oxygen, leading to accelerated degeneration and increased risk of disc-related injuries such as bulging or herniated discs.
+
+In summary, nicotine consumption can negatively impact the health of intervertebral discs by reducing blood flow and nutrient delivery, leading to dehydration, decreased shock absorption, and increased risk of disc injuries.",31.0,1.0,2.0,1.0,1.0
+30,<urn:uuid:4ecab773-d781-44be-8a57-6efe3091ea00>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus,"When measuring body parts for clothing, what's the correct way to position the measuring tape to ensure accuracy?","The measuring tape should be kept straight and level when wrapping around body parts. For chest, waist, or hips measurements, the tape should be parallel to the ground. The tape should be firm but not too tight - you want to feel it against your body without cinching it so snugly that it causes bulging. It also shouldn't be too loose as this can lead to inaccurate measurements.","To ensure accuracy when measuring body parts for clothing, the measuring tape should be positioned as follows:
+
+1. Chest/Bust: Place the measuring tape under the arms, around the fullest part of the bust. Keep the tape parallel to the floor.
+
+2. Waist: Wrap the measuring tape around the narrowest part of the waist, typically just above the belly button. Ensure the tape is horizontal and parallel to the floor.
+
+3. Hips: Measure around the fullest part of the hips, usually at the widest point of the buttocks. Keep the tape parallel to the floor.
+
+4. Neck: Measure around the base of the neck where a collar would sit, keeping the tape level and parallel to the floor.
+
+5. Sleeve Length: Measure from the base of the neck, across the shoulder, down the arm, and to the wrist bone. Ensure the tape is straight and not twisted.
+
+6. Inseam: Measure from the inside of the thigh (at the crotch) down to the heel. Keep the tape straight and parallel to the floor.
+
+7. Arm Length: Measure from the top of the shoulder (sleeve seam) down to the wrist bone. Ensure the tape is straight and not twisted.
+
+8. Shoulder Width: Measure from the tip of one shoulder, across the back, to the tip of the other shoulder. The tape should be straight and parallel to the floor.
+
+9. Length: For dresses or skirts, measure from the base of the neck (or waist for skirts) down to the desired hem length. Keep the tape straight and parallel to the floor.
+
+When taking measurements, it's important to:
+
+- Stand straight with shoulders relaxed and feet together.
+- Breathe normally; do not hold your breath or suck in your stomach.
+- Use a flexible measuring tape that won't compress the skin.
+- Ensure the measuring tape is parallel to the floor for most measurements.
+- Have someone else take the measurements if possible for greater accuracy.
+
+Following these guidelines will help you take accurate measurements for clothing.",32.0,0.0,-1.0,0.0,0.0
+31,<urn:uuid:006fbb26-e254-4535-8f97-45999dcce05e>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What are the common side effects associated with TMS treatment for depression?,"TMS is not associated with systemic side effects from drugs in the bloodstream. The only reported side effects are mild-to-moderate discomfort from electromagnetic pulses, including spasms, tingling, and twitching of facial muscles, and discomfort in the scalp at the site of stimulation. There is also a minimal risk of seizure.","The most common side effects associated with TMS treatment for depression are typically mild to moderate and may include:
+
+1. Scalp discomfort: Some patients may experience mild discomfort or soreness at the site where the TMS coil is placed on the scalp.
+
+2. Headache: A headache may occur during or after a TMS session, but it is usually temporary and can be managed with over-the-counter pain relievers.
+
+3. Tingling or twitching: Patients might feel tingling or experience slight twitching in the muscles of the face or scalp during the treatment.
+
+4. Lightheadedness: Some individuals may feel dizzy or lightheaded during or after a TMS session.
+
+5. Anxiety or mood changes: Occasionally, patients may experience temporary increases in anxiety or mood fluctuations during the course of treatment.
+
+These side effects usually decrease in frequency and intensity as treatment progresses. However, if you experience severe side effects or have concerns about your treatment, it's important to discuss them with your healthcare provider. They can help you manage any discomfort or adjust the treatment parameters as needed.",33.0,1.0,2.0,1.0,1.0
+32,<urn:uuid:4ddac3b6-2787-446a-8aa9-8d06dbf27d46>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What did French Montana say about the evolution of hip-hop and its different generations?,"French Montana expressed appreciation for different generations of hip-hop, saying he loves what Tupac and Biggie did for the game, as well as what Run-DMC did. He stated that the game just changes, and pointed to the financially elevated lifestyle that rap has afforded artists today as a sign of growth.","French Montana, born Thomas William Hearns, is a British-American rapper, record producer, and actor. He has been a part of the hip-hop scene since the early 2000s and has witnessed the evolution of the genre over the years.
+
+While specific quotes from French Montana about the evolution of hip-hop and its different generations may not be widely circulated, his perspective can be inferred from his music, interviews, and collaborations. French Montana often references the golden era of hip-hop and pays homage to the pioneers of the genre in his music. He is known for his collaborations with artists across different generations, which suggests an appreciation for the diversity and longevity of hip-hop.
+
+In a 2018 interview with DJ Khaled, French Montana talked about the state of the hip-hop industry and how it has changed over the years. He discussed the impact of technology and social media on the way music is created, distributed, and consumed. He also mentioned the importance of staying true to oneself and the significance of collaboration among artists.
+
+French Montana has also been open about the challenges faced by newer generations of hip-hop artists, such as the difficulty of standing out in a saturated market and the pressure to constantly produce new content. He has expressed the belief that the core values of hip-hop—creativity, authenticity, and community—should remain central to the genre, even as it evolves.
+
+Overall, French Montana's views on the evolution of hip-hop likely emphasize the genre's rich history, the importance of staying connected to its roots, and the need for artists to adapt to new technologies and trends while maintaining their artistic integrity.",34.0,0.0,2.0,0.0,1.0
+33,<urn:uuid:d69cbebc-133a-4ebe-9378-68235ec9f091>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What are the dimensions and weight of the Polish pottery spoon model H1705E?,The Polish pottery spoon is 0.6 inches high and measures 1.2 inches by 5.3 inches. It weighs 0.05 pounds.,"The Polish pottery spoon model H1705E is 0.6"" high and measures 1.2"" by 5.3"". Its weight is 0.05 lbs.",35.0,-1.0,0.0,0.0,0.0
+34,<urn:uuid:eca98e84-ccfa-482e-b379-eedd56a54fb3>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What was the strategic importance of the spiked soles in Roman military footwear?,"The spiked soles in Roman military footwear were strategically important because they helped soldiers maintain firm footing during battle, which was essential for winning wars. They prevented slipping on difficult terrain and enabled soldiers to both hold their ground and advance effectively, as a retreating army rarely wins wars, while an army that can advance and take ground is more likely to be victorious.","The strategic importance of the spiked soles in Roman military footwear, known as caligae, lay primarily in their traction and durability on various terrains. The caligae, worn by Roman legionaries, featured hobnails or small metal spikes on the soles of the leather shoes. These spikes served multiple purposes:
+
+1. **Traction**: The most significant advantage of the spiked soles was their ability to provide excellent traction, especially on wet or slippery surfaces. The hobnails bit into the ground, preventing soldiers from slipping, which was crucial in both marching and combat situations.
+
+2. **Durability**: The spikes also increased the durability of the shoes by protecting the soles from wear and tear. This was particularly important for soldiers who needed to cover long distances on foot and engage in combat.
+
+3. **Versatility**: The caligae were designed to be versatile, suitable for a wide range of terrains, from muddy fields to rocky paths. The spikes helped maintain grip and stability across different environments, enhancing the mobility and effectiveness of Roman legions.
+
+4. **Symbolism and Identity**: The distinctive appearance of the caligae, with their hobnailed soles, became a symbol of Roman military identity. They were a recognizable part of the uniform, contributing to the overall image and discipline of the Roman army.
+
+5. **Psychological Warfare**: The sight of Roman soldiers marching into battle with their distinctive footwear could have had a psychological impact on both enemies and allies. The appearance of the caligae might have instilled fear in adversaries, as it was a visual reminder of the Roman army's discipline, preparedness, and ability to maintain order and control in any situation.
+
+In summary, the spiked soles of Roman military footwear played a crucial role in enhancing the performance of the Roman legions by improving traction, durability, and versatility. They were an essential component of the Roman military's strategic advantage on the battlefield and during long campaigns.",36.0,0.0,1.0,0.0,0.5
+35,<urn:uuid:3b217742-0e07-4400-8f45-191f1b78db02>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,Can you describe the taste profile and recommended food pairings for Likuriya red wine?,"Likuriya red wine has a rounded, fruity, balanced taste with soft tannins, refreshing acidity, and hints of green pepper and prunes. It is recommended to serve it with poultry, meats, hot dishes, and both red and white meat.","I'm sorry, but I cannot provide a specific description or recommendations for Likuriya red wine as it is not a widely recognized brand or variety. If you have more information about the wine, such as its grape variety or region of origin, I may be able to offer some general guidance on taste profiles and food pairings based on similar wines.",37.0,1.0,2.0,1.0,1.0
+36,<urn:uuid:70e4adc3-caf0-4f8e-9062-12b24b78878d>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What genre of music is Nickel Creek known for?,"Nickel Creek is known for progressive country, bluegrass, and Americana music, and they have won a Grammy award.",Nickel Creek is known for the genre of bluegrass music.,38.0,1.0,2.0,1.0,1.0
+37,<urn:uuid:bbf6c646-f043-4da1-b571-22cc86de026c>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What are the key capabilities of white_dune for handling VRML97 and X3DV files?,"white_dune is a graphical editor that can read, create, and display VRML97/X3DV files, allowing users to modify the scenegraph/fields. It includes features for animation, 3D modeling with NURBS/Superformula, and supports stereoscopic viewing through 'quadbuffer'-capable stereo visuals. It also has compatibility with 3D input devices like joystick, spaceball, and magnetic tracker.","white_dune is a graphical VRML97/X3DV editor, simple NURBS/Superformula 3D modeller, animation tool, and VRML97/X3DV commandline compiler in development. It provides the following key capabilities for handling VRML97 and X3DV files:
+
+1. **Reading, Creating, and Displaying**: white_dune can read, create, and display VRML97 and X3DV files, allowing users to view and manipulate 3D scenes.
+
+2. **Scenegraph/Fields Editing**: It enables users to change the scenegraph and fields of VRML97 and X3DV files, offering a high degree of customization and control over the 3D content.
+
+3. **Support for Stereoscopic View**: With ""quadbuffer""-capable stereo visuals, white_dune supports stereoscopic viewing, enhancing the immersive experience for 3D content.
+
+4. **3D Input Device Support**: It supports 3D input devices like joysticks, spaceballs, and magnetic trackers, enabling more interactive and dynamic manipulation of 3D scenes.
+
+These capabilities make white_dune a versatile tool for developers, designers, and artists working with VRML97 and X3DV formats, providing them with the means to create, edit, and visualize complex 3D environments.",39.0,1.0,2.0,1.0,1.0
+38,<urn:uuid:3cee022b-a21a-4caf-8a24-38c5fa9ca82a>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,Why is losing a home bad for your health beyond just mental stress?,"Losing a home disrupts social ties to neighbors, schools, jobs and health care providers - all of which are important connections that help promote good health under normal circumstances. The negative effects also extend beyond just the homeowners to impact entire neighborhoods.","Losing a home can have significant negative impacts on both mental and physical health, extending beyond just the stress of the situation. Here are some ways in which losing a home can affect your health:
+
+1. **Mental Health Effects**: The loss of a home can lead to feelings of grief, anxiety, and depression. The emotional upheaval can cause significant distress, leading to a decline in mental health.
+
+2. **Chronic Stress**: The process of finding a new place to live, dealing with financial difficulties, and adjusting to a new environment can create prolonged stress, which can have long-term health consequences.
+
+3. **Increased Risk of Physical Illness**: Chronic stress from losing a home can weaken the immune system, making you more susceptible to infections and illnesses.
+
+4. **Sleep Disturbances**: The anxiety and uncertainty associated with homelessness or the search for a new home can lead to sleep problems, which in turn can affect physical health and contribute to mood disorders.
+
+5. **Nutritional Changes**: The stress and upheaval can lead to changes in eating habits, potentially resulting in poor nutrition, weight loss, or weight gain, depending on the individual's response to stress.
+
+6. **Physical Health Issues**: The loss of a home can lead to a decrease in physical activity due to the stress and the challenges of finding a new place to live, potentially increasing the risk of obesity, heart disease, and other health problems.
+
+7. **Impact on Relationships**: The stress of losing a home can put a strain on relationships with family and friends, leading to social isolation, which is a known risk factor for various health issues.
+
+8. **Financial Stress**: The financial burden of finding a new home, moving costs, and the potential loss of savings can lead to ongoing financial stress, which is associated with an increased risk of heart disease and other health problems.
+
+9. **Loss of Routine**: A stable home provides a sense of routine and security. Losing this can disrupt daily routines, affecting both physical and mental health.
+
+10. **Environmental Health Risks**: If forced to move into temporary or substandard housing, there can be increased exposure to environmental health hazards such as mold, pests, or poor air quality, which can cause respiratory issues and other health problems.
+
+11. **Increased Risk of Substance Abuse**: Some individuals may turn to alcohol or drugs as a coping mechanism for the stress and trauma associated with losing their home, leading to addiction and its associated health risks.
+
+12. **Impact on Children**: If children are involved, the stress of losing a home can have profound effects on their emotional and physical well-being, potentially leading to developmental delays and long-term health issues.
+
+Overall, the loss of a home can have a cascading effect on various aspects of health, making it crucial for individuals facing such situations to seek support from mental health professionals, social services, and community resources to mitigate these health risks.",40.0,1.0,2.0,1.0,1.0
+39,<urn:uuid:f8b09f9e-b26c-4b9c-b7a6-7e34af50669e>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Novice,A regular user with no understanding of specialized terms.,How can working with other specialists help when assessing a child?,Collaborating with related service providers during the assessment process is beneficial as it allows for a more comprehensive evaluation of the child. This collaboration helps in gathering different professional perspectives to make better informed decisions about the child's education.,"Working with other specialists can provide a comprehensive understanding of a child's needs and strengths. For example, a speech therapist can help identify language or communication difficulties, while a reading specialist can assist with learning to read. A paraprofessional can offer insights into the child's behavior and social interactions. By collaborating with these professionals, parents and educators can develop a more effective support plan tailored to the child's specific needs. Additionally, specialists can offer expert advice, strategies, and interventions that may not be immediately apparent to parents or teachers alone, ultimately helping the child reach their full potential.",41.0,1.0,2.0,1.0,1.0
+40,<urn:uuid:603eec1a-6d15-4cdf-b9c9-5450d9dfc1ac>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What was the final score in the match between West End LMR B and Kings Arms A in the Crewe Liberal Club Open League Premier Division?,"West End LMR B won 7-1 against Kings Arms A, with Aaron Taylor scoring the only point for Kings Arms to prevent a whitewash.",The final score in the match between West End LMR B and Kings Arms A in the Crewe Liberal Club Open League Premier Division was West End LMR B 7 - 1 Kings Arms A.,42.0,1.0,1.0,1.0,0.5
+41,<urn:uuid:57fdfe34-8c0a-4b0f-b49b-3d565941a2e2>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,When was the first publication of the bawdy verse version of Homer's Iliad?,The bawdy verse version of Homer's Iliad was originally published in 1762,"The first publication of the bawdy verse version of Homer's Iliad by Thomas Bridges, under the pseudonym Caustic Barebones, was in 1762.",43.0,1.0,2.0,1.0,1.0
+42,<urn:uuid:04843960-dec9-42de-aa4f-3a03fab326ce>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What specific impacts are expected at the 42-foot water level of the Cumberland River in Nashville?,"At 42 feet, Riverfront Park is flooded to the fourth grassy area, along with other recreational and greenway areas along the river. Additionally, portions of Cowan Street and Cowan Court are flooded and may be impassable. Industrial properties on Davidson Street, North First Street, Cowan Street and Cowan Court also experience flooding at this level.","At the 42-foot water level of the Cumberland River in Nashville, specific impacts are expected to be severe and widespread. Here are some of the anticipated impacts:
+
+1. **Flooding**: At this level, extensive flooding is expected throughout Nashville and surrounding areas. Homes, businesses, and infrastructure could be submerged, leading to significant property damage.
+
+2. **Evacuations**: Thousands of residents may need to be evacuated from their homes, leading to displacement and potential loss of personal belongings.
+
+3. **Infrastructure Damage**: Roads, bridges, and other critical infrastructure could be damaged or destroyed, disrupting transportation and emergency services.
+
+4. **Public Utilities**: Power outages, water service disruptions, and sewage backups are likely, affecting essential services for the community.
+
+5. **Rescue Operations**: Emergency services will be stretched thin as they respond to multiple rescue operations, potentially needing assistance from state and federal agencies.
+
+6. **Economic Impact**: Businesses may suffer severe losses, and the local economy could be negatively impacted due to the disruption of commerce and industry.
+
+7. **Environmental Concerns**: Floodwaters may contaminate water supplies, and wildlife habitats could be severely affected, leading to potential environmental hazards.
+
+8. **Health Risks**: Standing water can lead to the spread of diseases carried by mosquitoes and other pests. Additionally, the stress and disruption caused by flooding can have negative health effects on the population.
+
+9. **Recovery Efforts**: The aftermath of such flooding will require significant recovery efforts, including cleanup, rebuilding, and potentially long-term community planning to mitigate future flood risks.
+
+10. **Insurance Claims**: Homeowners and businesses will file numerous insurance claims, which can be a lengthy and complex process, especially if there are widespread damages.
+
+It's important to note that these impacts are based on historical data and modeling, and actual outcomes may vary. Preparedness measures, including evacuation plans, emergency supplies, and flood insurance, are crucial for residents and businesses in flood-prone areas.",44.0,1.0,2.0,1.0,1.0
+43,<urn:uuid:7730773a-b671-46f8-bc89-fbe43b13b061>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What are the main responsibilities of a Certified Energy Manager (CEM) in facilities and buildings?,"A Certified Energy Manager (CEM) optimizes the energy performance of facilities, buildings, or industrial plants. They serve as systems integrators for electrical, mechanical, process, and building infrastructure, analyzing solutions to reduce energy consumption cost-effectively. CEMs often lead teams and help develop and implement their organizations' energy management strategies.","A Certified Energy Manager (CEM) in facilities and buildings is responsible for optimizing the energy performance of a building by integrating electrical systems, mechanical systems, and process and building infrastructure to create cost-effective solutions to reduce energy consumption. CEMs often lead energy management teams, develop and implement energy management strategies, and ensure the establishment, implementation, maintenance, and continuous improvement of energy management systems. They also conduct analyses to determine energy efficiency measures, manage budgets for energy efficiency projects, and monitor energy consumption to identify areas for improvement. Additionally, CEMs may work on implementing energy-saving technologies and practices, supporting capital investments for energy efficiency projects, and ensuring compliance with energy laws and regulations.",45.0,1.0,2.0,1.0,1.0
+44,<urn:uuid:dbde9e82-63a4-4164-a535-9addf748d7f5>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,"When did the first group of scholars from CCAS visit China, and who was involved?","The first CCAS trip to China took place in 1972, and included scholars such as Richard Bernstein and Jonathan Mirsky. This was followed by later visits from Richard Kagan and Edward Friedman in 1975 and 1978.","The first group of scholars from the Committee of Concerned Asian Scholars (CCAS) visited China in 1972. Mark Seldon, Richard Bernstein, and Jonathan Mirsky were part of this initial trip. Later, Richard Kagan and Edward Friedman also visited China in 1975 and 1978, respectively. These visits were significant as they contributed to opening up dialogues and understanding between China and the United States during a period of changing diplomatic relations.",46.0,1.0,2.0,1.0,1.0
+45,<urn:uuid:c307e4a6-af7f-4efe-9241-e989b48413b5>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What was Ricky Allport's professional role and what impact did his passing have on the Caribbean agricultural sector?,"Ricky Allport was a senior agricultural officer in the Ministry of Agriculture, Dominica. His passing represents a tremendous loss to the agricultural sector in Dominica and the Caribbean region as a whole, as he made outstanding and immense contributions to agricultural development in Dominica, the Windward Islands, and the Caribbean region.","Ricky Allport was a senior agricultural officer in the Ministry of Agriculture in Dominica. His passing had a significant impact on the agricultural sector in Dominica and the wider Caribbean region, as he was highly regarded for his contributions to agriculture development. His expertise and dedication to the field were acknowledged by many, and his absence was felt deeply by the farming fraternity across the Windward Islands and the Caribbean. His work and influence in the agricultural sector were substantial, and his loss was considered a tremendous one for Dominica and the region.",47.0,1.0,1.0,1.0,0.5
+46,<urn:uuid:dd0dd09e-58d1-45f4-98ab-564e33cabb0f>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,Is it true that bipolar disorder is exclusively caused by brain chemistry issues?,"No, this is actually a myth. While bipolar disorder does have an organic component, it is typically influenced by a variety of factors including environment and experience. It's not solely caused by a chemical imbalance in the brain.","No, it is not accurate to say that bipolar disorder is exclusively caused by brain chemistry issues. While brain chemistry and neurochemistry play a significant role in the development and expression of bipolar disorder, it is a complex condition influenced by a combination of genetic, environmental, and neurobiological factors. 
+
+Research suggests that bipolar disorder has a strong genetic component, with individuals having a family history of the disorder being at a higher risk. However, the exact genes responsible have not been fully identified, and it is believed that multiple genes are involved, each contributing a small amount to the overall risk.
+
+Environmental factors such as stressful life events, trauma, and drug or alcohol use can also trigger episodes of bipolar disorder in individuals who are genetically predisposed. These factors may influence brain chemistry and neurobiological processes, exacerbating symptoms.
+
+Neuroimaging studies have revealed differences in brain structure and function in people with bipolar disorder compared to those without the condition. These differences may involve neurotransmitter systems, neural circuits, and brain regions involved in mood regulation.
+
+In summary, while brain chemistry is a crucial aspect of bipolar disorder, it is not the sole cause. The disorder results from a complex interplay of genetic, environmental, and neurobiological factors that affect brain function and mood regulation.",48.0,1.0,2.0,1.0,1.0
+47,<urn:uuid:a4562289-043a-488c-9ddf-fc2127be0429>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What are the key details about the contract for rehabilitating the Entebbe-Kibuye road section in Uganda?,"The contract was awarded to China Communications Construction Company (CCCC) for US$12 million to rehabilitate a 22-kilometer stretch from Mpala, Entebbe to Kibuye in Kampala. The project began in August/September 2021 and as of March 2022 was 50% complete, with expected completion in August 2022. The scope includes restoring existing sidewalks, constructing drainage channels, and installing street lights.","The key details about the contract for rehabilitating the Entebbe-Kibuye road section in Uganda are as follows:
+
+1. **Contractor**: The contract for the rehabilitation of the 22-kilometer stretch of the Entebbe road was awarded to the China Communications Construction Company (CCCC).
+
+2. **Cost**: The contract was awarded at a cost of US$12 million.
+
+3. **Scope of Work**: The scope of the rehabilitation works includes the restoration of existing sidewalks, the construction of drainage channels to avoid flooding (especially around the Kajjansi region), and the installation of street lights.
+
+4. **Project Status**: As of March 2022, the project was reported to be 50% complete by the CCCC site engineer, with an estimated completion date of August 2022.
+
+5. **Project Duration**: Construction works commenced in August/September 2021, with the project expected to be completed within five months from the time of the report, i.e., by August 2022.
+
+6. **Authority**: The Uganda National Roads Authority (UNRA) is responsible for the development and maintenance of Uganda's national roads network and advised the government on general road policies and national transport concerns.
+
+7. **Road Importance**: The Entebbe road is one of Uganda's busiest roads, leading to Uganda's only international airport and connecting Wakiso District to Kibuye in Kampala.
+
+8. **Impact of Rehabilitation**: The road rehabilitation aims to improve traffic conditions, reduce congestion, and decrease the number of traffic accidents, especially in areas prone to flooding.
+
+9. **Funding**: The contract was funded by the government of Uganda and the Exim Bank of China, with the loan from China Exim Bank being paid back by the Ugandan government through collecting taxes from its citizens over a period of 40 years.
+
+10. **Additional Costs**: An additional US$40 million was used for compensation to landowners who were vacated from areas where the expressway passed.
+
+These details highlight the significant investment in infrastructure and the collaborative effort between Uganda and China to enhance transportation infrastructure in Uganda.",49.0,1.0,2.0,1.0,1.0
+48,<urn:uuid:6e6eb558-772c-41db-9038-c397d3331fcd>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,What are the key tax implications for corporations compared to other business structures?,"Corporations face distinct tax implications: they pay federal, state, and sometimes local taxes on profits, unlike LLCs. Additionally, there's a double taxation situation where the corporation pays taxes on dividends paid to shareholders, and then shareholders must pay taxes on that income themselves. However, corporate profits are taxed at a lower rate than the personal income tax rate individuals pay.","The key tax implications for corporations compared to other business structures include:
+
+1. **Double Taxation**: Corporations are subject to double taxation. First, the corporation pays taxes on its profits at the corporate level. Then, if the corporation distributes profits to shareholders as dividends, those dividends are taxed again at the individual level. This can result in a higher overall tax burden compared to other business structures.
+
+2. **Corporate Tax Rate**: Corporations are typically taxed at a flat rate, which is currently 21% at the federal level in the United States. This rate can be advantageous for businesses with significant profits, as it provides a predictable tax expense.
+
+3. **Pass-Through Entities**: In contrast, pass-through entities such as sole proprietorships, partnerships, and S-Corporations (if eligible) do not pay taxes at the entity level. Instead, the profits or losses pass through to the owners, who report them on their personal tax returns. This can be more tax-efficient for businesses with moderate profits or losses.
+
+4. **Tax Deductions**: Corporations can deduct various business expenses, such as salaries, rent, and utilities, which can reduce their taxable income. However, they may face restrictions on certain deductions, such as the deduction for dividends paid to shareholders.
+
+5. **Self-Employment Taxes**: Unlike corporations, sole proprietors and partners are subject to self-employment taxes, which include Social Security and Medicare taxes. This can result in higher tax liabilities for the owners of these types of businesses.
+
+6. **State and Local Taxes**: Corporations are subject to state and local taxes, which can vary widely depending on the jurisdiction. Pass-through entities also pay state and local taxes, but the tax treatment can differ, and some states offer pass-through entity status to avoid double taxation.
+
+7. **Capital Gains**: The tax treatment of capital gains can differ based on the business structure. For corporations, capital gains are generally taxed at the corporate level, and then again at the individual level if distributed as dividends. For pass-through entities, capital gains are taxed only at the individual level.
+
+8. **International Considerations**: Corporations may face additional tax implications related to international operations, such as foreign tax credits and controlled foreign corporation (CFC) rules. Pass-through entities may also face international tax issues, but the treatment can differ.
+
+In summary, the key tax implications for corporations involve double taxation, a flat corporate tax rate, and potential restrictions on certain deductions. Compared to other business structures, corporations face a unique tax environment that can impact their overall tax liability.",,,,,
+49,<urn:uuid:38ae8a1f-389e-4d7e-9883-f34c06124f78>,first turn question; Natural,"the initial question of a conversation, and therefore self-contained and understandable, without any other context.; phrased in the way people typically speak, reflecting everyday language use, without formal or artificial structure.",Expert,A specialized user with deep understanding of the corpus.,How does critical illness cover work and what benefits does it provide?,Critical illness cover provides a tax-free lump sum payment if you're diagnosed with a serious illness during the policy term. This offers financial security and emotional freedom to focus on recovery.,"Critical illness cover is a type of insurance that provides a lump sum payment if the policyholder is diagnosed with one of the specified critical illnesses during the term of the policy. This payment can be used to help cover medical expenses, lost income, and other costs associated with the illness.
+
+Here's how it generally works:
+
+1. **Policy Purchase**: You purchase a critical illness insurance policy, which typically involves paying a regular premium.
+
+2. **Diagnosis of a Critical Illness**: If you are diagnosed with one of the illnesses covered by your policy, you can make a claim.
+
+3. **Claim Process**: You will need to provide evidence of your diagnosis, such as medical reports or a letter from your doctor.
+
+4. **Benefit Payment**: If your claim is accepted, you will receive a lump sum payment. This payment is usually tax-free and can be used for a variety of purposes, such as:
+
+   - Paying medical bills not covered by other insurance.
+   - Covering lost income if you are unable to work due to the illness.
+   - Making home modifications to accommodate your condition.
+   - Paying off debts or mortgage payments.
+   - Covering the costs of private treatment or travel for treatment.
+
+The benefits of critical illness cover include:
+
+- **Financial Security**: It provides a financial safety net during a difficult time, helping to alleviate the stress of medical bills and other expenses.
+  
+- **Flexibility**: The lump sum payment can be used in a way that best suits your needs and financial situation.
+
+- **Peace of Mind**: Knowing you have protection against the financial impact of a critical illness can provide peace of mind.
+
+- **Protection for Loved Ones**: If you are unable to work due to a critical illness, this cover can help ensure that your family's financial needs are met.
+
+It's important to read the policy details carefully to understand what illnesses are covered, the conditions for making a claim, and any exclusions or limitations. Critical illness cover is typically offered as an additional benefit to life insurance policies or as a standalone policy.",,,,,
