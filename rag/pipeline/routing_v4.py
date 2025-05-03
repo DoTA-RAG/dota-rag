@@ -91,15 +91,14 @@ def run_rag_pipeline(question: str) -> dict:  # ↓ return type unchanged
     )
     final_answer = final_resp.choices[0].message.content
 
-    # ---------- NEW Step 5  (Simple Self-reflection) ----------
+    # ---------- NEW Step 5  (CoT Self-reflection) ----------
     num_retries = 3
 
     for _ in range(num_retries):
         self_reflection_resp = client.chat.completions.create(
             model="tiiuae/falcon3-10b-instruct",
-            max_tokens=512,
-            temperature=0.6,
-            top_p=0.95,
+            max_tokens=None,
+            temperature=0.2,
             messages=[
                 {
                     "role": "system",
@@ -108,7 +107,11 @@ def run_rag_pipeline(question: str) -> dict:  # ↓ return type unchanged
                         "Focus on two key aspects:\n"
                         "- Faithfulness: Is the answer grounded in the retrieved context? Avoid hallucinations or unsupported claims.\n"
                         "- Relevance: Does the answer directly and effectively address the user's question? Avoid vague or off-topic content.\n\n"
-                        "Consider these aspects and provide a revised answer. The answer **must** be enclosed in LaTeX-style boxing, for example: \\boxed{}"
+                        "Before evaluating the answer, you should follow these steps:\n"
+                        "1. Restate the question and the model's answer.\n"
+                        "2. Evaluate the faithfulness of the answer. Is it based on the retrieved text?\n"
+                        "3. Evaluate the relevance of the answer. Does it directly address the question?\n"
+                        "4. Provide the revised answer. The answer **must** be enclosed in LaTeX-style boxing, for example: \\boxed{}"
                     ),
                 },
                 {
