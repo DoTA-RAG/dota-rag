@@ -52,8 +52,9 @@ from rag.rag_pipeline import run_rag_pipeline
 import pandas as pd
 from tqdm import tqdm
 import argparse
+import asyncio
 
-def main():
+async def main():
     parser = argparse.ArgumentParser(description="Process a JSONL file.")
     parser.add_argument(
         "input_file",
@@ -85,7 +86,7 @@ def main():
         max_retries = 5
         for attempt in range(1, max_retries + 1):
             try:
-                answer = run_rag_pipeline(question, mode="routing_v2")
+                answer = await run_rag_pipeline(question, mode="routing_v5")
                 df.at[idx, "answer"] = answer.get("answer", "")
                 df.at[idx, "final_prompt"] = answer.get("final_prompt", "")
                 df.at[idx, "passages"] = answer.get("passages", "")
@@ -119,4 +120,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

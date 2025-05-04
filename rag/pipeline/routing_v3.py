@@ -97,9 +97,8 @@ def run_rag_pipeline(question: str) -> dict:  # ↓ return type unchanged
     for _ in range(num_retries):
         self_reflection_resp = client.chat.completions.create(
             model="tiiuae/falcon3-10b-instruct",
-            max_tokens=512,
-            temperature=0.6,
-            top_p=0.95,
+            max_tokens=8192,
+            temperature=0.2,
             messages=[
                 {
                     "role": "system",
