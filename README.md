@@ -1,165 +1,51 @@
-# Dota RAG Pipeline
+# DoTA-RAG Pipeline
 
-This repository implements a **Retrieval-Augmented Generation (RAG) pipeline** for answering support questions. It leverages **AWS SSM** for secure parameter management, a **transformer-based embedding model**, **Pinecone** for vector search, and **AI71's Falcon-180B-chat model** for generating responses.
+## 🚀 Quick Start
 
-## 🚀 Features
+### 1. Clone & install
 
-- **🔐 Secure Parameter Management:** Uses AWS SSM to securely retrieve parameters and secrets.
-- **🤖 Transformer Embeddings:** Uses a pre-trained transformer model to generate embeddings for queries.
-- **🔍 Pinecone Integration:** Retrieves relevant context via vector search.
-- **📚 RAG Pipeline:** Combines retrieved context with a chat model to generate informative answers.
-- **📊 Reranking Mechanism:** Uses `bge-reranker-v2-m3` model to enhance search relevance.
-- **✅ Evaluation Script:** Processes a CSV file of questions and saves responses for evaluation.
+```bash
+git clone https://github.com/<your‑gh‑user>/dota‑rag.git
+cd dota‑rag
+pip install -r requirements.txt
+```
 
----
+### 2. Configure secrets
 
-## 🛠️ Requirements
+Copy the sample env file and fill in your keys:
 
-- Python **3.8 or later**
-- **pip** (Python package manager)
-- **Pinecone API key**
-- **AWS credentials (for SSM)**
-- **AI71 API key (for Falcon-180B-chat)**
+```bash
+cp env_sample .env
+# edit .env → add AWS, Pinecone, and AI71 keys
+```
 
----
-
-## 📦 Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/dota-rag.git
-   cd dota-rag
-   ```
-
-2. **Install the required dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables:**
-   - Copy the sample environment file:
-     ```bash
-     cp env_sample .env
-     ```
-   - Open `.env` and insert your required keys (AWS credentials, Pinecone API key, AI71 API key, etc.).
-
----
-
-## 🚀 Running the RAG Pipeline
-
-To run the pipeline for a **single query**, execute:
+### 3. Run a single query
 
 ```bash
 python main.py
 ```
 
-This script runs the retrieval and generation pipeline, using Pinecone to find relevant context and Falcon-180B-chat to generate a response.
+You will be prompted for a question and receive a model‑generated answer with supporting passages.
 
-To verify the schema for submiting liverag.
+### 4. Batch evaluation
+
 ```bash
-python verify_answer.py sample_answers.jsonl
+# inference
+python get_response.py \
+  --input-file data/testset/testset-50q.jsonl \
+  --mode routing_v6_final \
+  --concurrency 8
+
+# verify
+python verify_answer.py data/out/testset-50q-result.jsonl
+
+# llm judge with falcon
+python utils/eval/evaluate-falcon.py \
+  --input_file data/out/testset-50q-result.jsonl \
+  --eval_name both
+
+# llm judge with claude
+python utils/eval/evaluate.py \
+  --input_file data/out/testset-50q-result.jsonl \
+  --eval_name both
 ```
----
-
-## 📊 Evaluation (Batch Processing)
-
-The repository includes an **evaluation script** that processes multiple questions from a jsonl file.
-
-1. **Prepare your jsonl file:**  
-   Ensure your file is located at:
-   ```
-   data/testset/testset-50q.jsonl
-   ```
-   The jsonl should contain a column named **`Question`**.
-
-2. **Get response to eval:**
-   ```bash
-   python get_response.py data/testset/testset-50q.jsonl
-   # or
-   python get_response.py data/testset/testset-3q.jsonl
-   python verify_answer.py data/out/testset-3q-result.jsonl
-   ```
-   
-3. **Run judge score:**
-```bash
-   python utils/eval/evaluate.py \
-   --input_file "data/out/testset-3q-result.jsonl"\
-   --eval_name "both"
-```
-
----
-
-## 📂 Repository Structure
-
-```
-dota-rag/
-├── data/
-│   └── data_morgana_examples_live-rag.csv  # CSV file with evaluation questions 
-├── utils/
-│   ├── evaluate.py             # Evaluation script
-│   ├── prompt_faithfulness.py  # Faithfulness metric prompt templates
-│   └── prompt_relevance.py     # Relevance metric prompt templates
-├── rag/
-│   ├── __init__.py             # Package initialization and exports
-│   ├── aws_ssm.py              # AWS SSM utilities
-│   ├── embedding.py            # Transformer embedding functions
-│   ├── pinecone_utils.py       # Pinecone vector search and reranking functions
-│   ├── rag_pipeline.py         # RAG pipeline implementation
-│   └── rerank.py               # Reranking functions (bge-reranker-v2-m3)
-├── env_sample                  # Sample environment file (copy to .env)
-├── get_response.py             # Evaluation script to process CSV questions
-├── main.py                     # Main script for running the pipeline
-├── requirements.txt            # Python dependencies
-└── README.md                 
-```
-
----
-
-## 📌 Reranking Mechanism
-
-The pipeline **enhances retrieval accuracy** by reranking results with the `bge-reranker-v2-m3` model.
-
-1. Pinecone retrieves top-k documents.
-2. The **reranker model** reorders them based on **query relevance**.
-3. The **most relevant** documents are fed into the **chat model**.
-
-### Example Usage:
-
-```python
-from rag.rerank import rerank_documents
-
-query = "Tell me about the tech company Apple"
-documents = [
-    "Apple is a fruit with a crisp texture.",
-    "Apple Inc. is a technology company that makes the iPhone.",
-    "Many people eat apples for their health benefits.",
-    "Apple revolutionized the tech industry with its sleek designs."
-]
-
-reranked_results = rerank_documents(query, documents, top_n=3)
-print(reranked_results)
-```
-
-**Output:**
-```
-[
-    {"score": 0.98, "document": "Apple Inc. is a technology company that makes the iPhone."},
-    {"score": 0.91, "document": "Apple revolutionized the tech industry with its sleek designs."},
-    {"score": 0.75, "document": "Apple is a fruit with a crisp texture."}
-]
-```
-
----
-
-## 🔥 Notes & Limitations
-
-- **Token Limits:** Falcon-180B-chat has a **2048-token limit** (input + output). The pipeline **truncates** context to stay within this.
-- **Retries & Skipped Questions:** If a question is missing (`NaN`) or invalid, it is **skipped** in evaluation to avoid errors.
-- **AI71 API Authentication:** Ensure **API keys** are set in `.env` before running.
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License**.
-
