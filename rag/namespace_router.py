@@ -1,11 +1,15 @@
 # rag/namespace_router.py
 
-from ai71 import AI71
+from openai import AsyncOpenAI
 import re, ast
 from collections import Counter
+import os
+import asyncio
 
-client = AI71()
-
+client = AsyncOpenAI(
+    base_url="https://api.ai71.ai/v1/",
+    api_key=os.environ['AI71_API_KEY']
+)
 
 def extract_boxed(text: str, self_reflect: bool = False) -> list[str] | None:
     """
@@ -26,7 +30,7 @@ def extract_boxed(text: str, self_reflect: bool = False) -> list[str] | None:
         return [x.strip() for x in content.split(",") if x.strip()]
 
 
-def choose_namespaces(
+async def choose_namespaces(
     question: str, available: list[str], votes: int = 4, top_n: int = 2
 ) -> list[str]:
     """
@@ -40,31 +44,28 @@ def choose_namespaces(
     choices_str = ", ".join(available)
     ballots: list[str] = []
 
-    for _ in range(votes):
-        resp = (
-            client.chat.completions.create(
-                model="tiiuae/falcon3-10b-instruct",
-                max_tokens=128,
-                temperature=0.6,
-                top_k=95,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {
-                        "role": "user",
-                        "content": (
-                            f"Q: {question}\n\n"
-                            f"Available namespaces:\n{choices_str}\n\n"
-                            "Step 1: Identify what the question is about.\n"
-                            "Step 2: Choose only the most relevant namespaces.\n"
-                            "Step 3: Return final result in \\boxed{}."
-                        ),
-                    },
-                ],
-            )
-            .choices[0]
-            .message.content
-        )
-        ns = extract_boxed(resp)
+    responses = await client.chat.completions.create(
+        model="tiiuae/falcon3-10b-instruct",
+        max_tokens=128,
+        temperature=0.6,
+        n=votes,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {
+                "role": "user",
+                "content": (
+                    f"Q: {question}\n\n"
+                    f"Available namespaces:\n{choices_str}\n\n"
+                    "Step 1: Identify what the question is about.\n"
+                    "Step 2: Choose only the most relevant namespaces.\n"
+                    "Step 3: Return final result in \\boxed{}."
+                ),
+            },
+        ],
+    )
+    
+    for response in responses.choices:
+        ns = extract_boxed(response.message.content)
         if ns:
             ballots.extend(ns)
 
