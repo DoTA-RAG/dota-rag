@@ -76,6 +76,28 @@ def _average_internal_similarity(cluster_indices, sim_matrix):
 
 
 async def run_rag_pipeline(question: str) -> dict:  # ↓ return type unchanged
+    
+    # ---------- original Step 1  (question-refine) ----------
+    initial_resp = await client.chat.completions.create(
+        model="tiiuae/falcon3-10b-instruct",
+        max_tokens=128,
+        temperature=0.2,
+        top_p=0.1,
+        messages=[
+            {
+                "role": "system", 
+                "content": "You are a helpful assistant. Your task is to rewrite sentences by correcting typos and improving the wording to ensure they are written in clear, natural English. If a typo is intentional or acceptable as-is, leave it unchanged."
+            },
+            {
+                "role": "user",
+                "content": question,
+            },
+        ],
+    )
+    print("old q:", question)
+    question = str(initial_resp.choices[0].message.content) # new question
+    print("new q:", question)
+
     # ---------- original Step 1  (namespace routing) ----------
     ns_to_use = await choose_namespaces(question, list_namespaces(), votes=4, top_n=2)
 
